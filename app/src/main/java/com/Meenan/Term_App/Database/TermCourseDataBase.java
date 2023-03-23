@@ -14,8 +14,8 @@ import com.Meenan.Term_App.Entities.Term;
 @Database(entities = {Course.class, Term.class}, version = 1, exportSchema = false)
 public abstract class TermCourseDataBase extends RoomDatabase {
 
-    public abstract CourseDAO();
-    public abstract TermDAO();
+    public abstract CourseDAO courseDAO();
+    public abstract TermDAO termDAO();
 
     public static volatile TermCourseDataBase INSTANCE;
 
