@@ -33,7 +33,6 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
                     int position = getAdapterPosition();
                     final Term curTerm = mTerms.get(position);
                     Intent intent = new Intent(context, TermDetails.class);
-                    intent.putExtra("id", curTerm.getTermID());
                     intent.putExtra("name", curTerm.getTermName());
                     intent.putExtra("start", curTerm.getStartDate());
                     intent.putExtra("end", curTerm.getEndDate());
@@ -46,6 +45,8 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     }
 
     private LayoutInflater mInflater;
+
+
 
     public TermAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -60,11 +61,26 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull TermAdapter.TermViewHolder holder, int position) {
+        if (mTerms != null) {
+            Term currTerm = mTerms.get(position);
+            String termName = currTerm.getTermName();
+            holder.termItemView.setText(termName);
+        }
+
+        else {
+            holder.termItemView.setText("No Terms have been Added. Please Add a Term to get Started");
+        }
 
     }
 
+    //FIXME : return list Size, receiving null Pointer exception
     @Override
     public int getItemCount() {
-        return 0;
+        return 4;
+    }
+
+    public void setTerms(List<Term> term) {
+        mTerms = term;
+        notifyDataSetChanged();
     }
 }

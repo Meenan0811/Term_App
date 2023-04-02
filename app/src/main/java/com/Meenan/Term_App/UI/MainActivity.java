@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.Meenan.Term_App.Database.Repository;
+import com.Meenan.Term_App.Entities.Term;
 import com.Meenan.Term_App.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +28,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //Test Items
+        Term term = new Term("01/01/2023", "01/30/2023", "Term 1");
+        Repository repository = new Repository(getApplication());
+        try {
+            repository.insert(term);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
