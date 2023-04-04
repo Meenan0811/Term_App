@@ -9,8 +9,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.Meenan.Term_App.Database.Repository;
+import com.Meenan.Term_App.Entities.Term;
 import com.Meenan.Term_App.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 public class ViewTerm extends AppCompatActivity {
 
@@ -32,5 +36,15 @@ public class ViewTerm extends AppCompatActivity {
         final TermAdapter termAdapter = new TermAdapter(this);
         recyclerView.setAdapter(termAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        Repository repository = new Repository(getApplication());
+        List<Term> allTerms = null;
+        try {
+            allTerms = repository.getAllTerms();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        termAdapter.setTerms(allTerms);
+
     }
 }

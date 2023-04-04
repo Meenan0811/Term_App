@@ -30,13 +30,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Test Items
-        Term term = new Term("01/01/2023", "01/30/2023", "Term 1");
+        /*Term term = new Term("01/01/2023", "01/30/2023", "Term 1");
         Repository repository = new Repository(getApplication());
         try {
             repository.insert(term);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        } */
 
     }
 

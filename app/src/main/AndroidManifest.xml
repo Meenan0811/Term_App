@@ -24,6 +24,10 @@
             android:exported="false"
             android:parentActivityName=".UI.ViewTerm" />
         <activity
+            android:name=".UI.TermDetails"
+            android:exported="false"
+            android:parentActivityName=".UI.ViewTerm" />
+        <activity
             android:name=".UI.ViewCourses"
             android:exported="false"
             android:parentActivityName=".UI.MainActivity" />

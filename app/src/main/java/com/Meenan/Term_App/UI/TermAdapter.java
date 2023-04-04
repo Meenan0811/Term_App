@@ -28,11 +28,10 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
             super(itemView);
             termItemView = itemView.findViewById(R.id.termlist);
             itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     final Term curTerm = mTerms.get(position);
-                    Intent intent = new Intent(context, TermDetails.class);
+                    Intent intent = new Intent(context, ModifyTerm.class);
                     intent.putExtra("name", curTerm.getTermName());
                     intent.putExtra("start", curTerm.getStartDate());
                     intent.putExtra("end", curTerm.getEndDate());
@@ -73,10 +72,10 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
 
     }
 
-    //FIXME : return list Size, receiving null Pointer exception
+
     @Override
     public int getItemCount() {
-        return 4;
+        return mTerms.size();
     }
 
     public void setTerms(List<Term> term) {
