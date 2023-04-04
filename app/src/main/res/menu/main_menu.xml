@@ -10,5 +10,8 @@
     <item
         android:title="View Mentors"
         android:id="@+id/viewmentors" />
+    <item
+        android:title="Add Sample Data"
+        android:id="@+id/addsampledata" />
 
 </menu>

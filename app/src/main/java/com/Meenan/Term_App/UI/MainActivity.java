@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.Meenan.Term_App.Database.Repository;
+import com.Meenan.Term_App.Entities.Course;
+import com.Meenan.Term_App.Entities.Mentor;
 import com.Meenan.Term_App.Entities.Term;
 import com.Meenan.Term_App.R;
 
@@ -63,6 +65,20 @@ public class MainActivity extends AppCompatActivity {
             case R.id.viewmentors:
                 intent = new Intent(MainActivity.this, ViewMentors.class);
                 startActivity(intent);
+                return true;
+
+            case R.id.addsampledata:
+                Repository repository = new Repository(getApplication());
+                Term term = new Term("01/01/2023", "01/30/2023", "Term 1");
+                Course course = new Course("C646", "01/01/23", "01/31/23", "In Progress", 1);
+                Mentor mentor = new Mentor("M.Meenan","6093434720", "mentor1@wgu.edu" );
+                try {
+                    repository.insert(term);
+                    repository.insert(course);
+                    repository.insert(mentor);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 return true;
         }
         return true;

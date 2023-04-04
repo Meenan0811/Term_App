@@ -60,11 +60,11 @@ public class ModifyTerm extends AppCompatActivity {
                         Toast.makeText(ModifyTerm.this, "Term has not been saved, please ensure all fields are filled out", Toast.LENGTH_LONG);
                         e.printStackTrace();
                     }
-                    else {
+                   /* else {
                         termId = currTerm.getTermID();
                         mTerm = mTerm.
                                 //FIXME Pass Term and update when termId is found
-                    }
+                    }*/
 
                 }
             }
