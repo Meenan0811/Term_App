@@ -25,11 +25,11 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     class CourseViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView courseItemView;
+        public final TextView courseItemView;
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
-            courseItemView = itemView.findViewById(R.id.courserecyclerview);
+            courseItemView = itemView.findViewById(R.id.courselist);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -65,12 +65,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         if (mCourses != null) {
             Course curCourse = mCourses.get(position);
             String courseName = curCourse.getCourseName();
-            holder.courseItemView.setText(courseName);
+            String courseStatus = curCourse.getCourseStatus();
+            holder.courseItemView.setText(courseName + "   " + courseStatus);
         }
         else {
             holder.courseItemView.setText("No Courses added, please add course");
         }
-
     }
 
     @Override
