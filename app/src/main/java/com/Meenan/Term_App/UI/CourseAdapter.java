@@ -2,14 +2,12 @@ package com.Meenan.Term_App.UI;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.Meenan.Term_App.Entities.Course;
@@ -20,7 +18,7 @@ import java.util.List;
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder>  {
 
     private List<Course> mCourses;
-    private Context context;
+    private final Context context;
 
 
     class CourseViewHolder extends RecyclerView.ViewHolder {
@@ -29,24 +27,26 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
-            courseItemView = itemView.findViewById(R.id.courselist);
+            courseItemView = itemView.findViewById(R.id.assignedcourselist);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     final Course curCourse = mCourses.get(position);
                     Intent intent = new Intent(context, ViewCourses.class);
-                    intent.putExtra("name", curCourse.getCourseName());
+                    intent.putExtra("courseName", curCourse.getCourseName());
                     intent.putExtra("status", curCourse.getCourseStatus());
-                    intent.putExtra("start date", curCourse.getStartDate());
-                    intent.putExtra("end date", curCourse.getEndDate());
+                    intent.putExtra("startDate", curCourse.getStartDate());
+                    intent.putExtra("endDate", curCourse.getEndDate());
+                    intent.putExtra("courseID", curCourse.getCourseID());
+                    intent.putExtra("termID", curCourse.getTermID_FK());
                     context.startActivity(intent);
                 }
             });
         }
     }
 
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     public CourseAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -75,7 +75,11 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     @Override
     public int getItemCount() {
-        return mCourses.size();
+        if (mCourses != null) {
+            return mCourses.size();
+        } else {
+            return 1;
+        }
     }
 
     public void setTerms(List<Course> course) {

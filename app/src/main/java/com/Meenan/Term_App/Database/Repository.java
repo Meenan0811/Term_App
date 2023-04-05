@@ -20,17 +20,17 @@ import java.util.concurrent.Executors;
 
 public class Repository {
 
-    private CourseDAO mCourseDAO;
-    private TermDAO mTermDAO;
-    private MentorDAO mMentorDAO;
-    private AssesmentDAO mAssesmentDAO;
+    private final CourseDAO mCourseDAO;
+    private final TermDAO mTermDAO;
+    private final MentorDAO mMentorDAO;
+    private final AssesmentDAO mAssesmentDAO;
 
     private List<Course> mAllCourses;
     private List<Term> mAllTerms;
     private List<Mentor> mAllMentors;
     private List<Assesment> mAllAssesments;
 
-    private static int NUMBER_OF_THREADS = 4;
+    private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService dbExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     public Repository(Application app) {
@@ -75,6 +75,13 @@ public class Repository {
             mAllCourses = mCourseDAO.getAllCourses();
         });
         Thread.sleep(1000);
+        return mAllCourses;
+    }
+
+    public List<Course> getAllTermCourses(int termID) throws InterruptedException {
+        dbExecutor.execute(() -> {
+            mAllCourses = mCourseDAO.getAllTermCourses(termID);
+        });
         return mAllCourses;
     }
 

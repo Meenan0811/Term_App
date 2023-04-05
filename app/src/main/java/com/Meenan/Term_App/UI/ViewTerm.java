@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.Meenan.Term_App.Database.Repository;
+import com.Meenan.Term_App.Entities.Course;
 import com.Meenan.Term_App.Entities.Term;
 import com.Meenan.Term_App.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -45,6 +46,8 @@ public class ViewTerm extends AppCompatActivity {
             e.printStackTrace();
         }
         termAdapter.setTerms(allTerms);
+
+
 
     }
 }

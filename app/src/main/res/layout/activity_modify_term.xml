@@ -67,7 +67,7 @@
                 android:id="@+id/termStartEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
+                android:layout_marginLeft="35dp"
                 android:hint="01/01/2023"
                 tools:layout_editor_absoluteX="171dp"
                 tools:layout_editor_absoluteY="161dp" />
@@ -91,7 +91,7 @@
                 android:id="@+id/termEndEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
+                android:layout_marginLeft="40dp"
                 android:hint="01/31/2023"
                 tools:layout_editor_absoluteX="171dp"
                 tools:layout_editor_absoluteY="232dp" />
@@ -103,25 +103,47 @@
         android:id="@+id/savetermbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save Term"
         android:clickable="true"
+        android:text="Save Term"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.159" />
+        app:layout_constraintVertical_bias="0.072" />
 
     <Button
         android:id="@+id/addcoursebutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Course"
         android:clickable="true"
+        android:text="Add Course"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/savetermbutton"
-        app:layout_constraintVertical_bias="0.506" />
+        app:layout_constraintTop_toBottomOf="@+id/assignedcourserecyclerview"
+        app:layout_constraintVertical_bias="0.458" />
+
+    <TextView
+        android:id="@+id/assignedcourselist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Assigned Courses"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/savetermbutton" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/assignedcourserecyclerview"
+        android:layout_width="wrap_content"
+        android:layout_height="275dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assignedcourselist" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

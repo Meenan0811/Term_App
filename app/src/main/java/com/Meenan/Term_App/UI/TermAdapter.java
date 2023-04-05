@@ -18,7 +18,7 @@ import java.util.List;
 public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder> {
 
     private List<Term> mTerms;
-    private Context context;
+    private final Context context;
 
     class TermViewHolder extends RecyclerView.ViewHolder {
 
@@ -32,9 +32,10 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
                     int position = getAdapterPosition();
                     final Term curTerm = mTerms.get(position);
                     Intent intent = new Intent(context, ModifyTerm.class);
-                    intent.putExtra("name", curTerm.getTermName());
-                    intent.putExtra("start", curTerm.getStartDate());
-                    intent.putExtra("end", curTerm.getEndDate());
+                    intent.putExtra("termName", curTerm.getTermName());
+                    intent.putExtra("startDate", curTerm.getStartDate());
+                    intent.putExtra("endDate", curTerm.getEndDate());
+                    intent.putExtra("termID",curTerm.getTermID());
                     context.startActivity(intent);
                 }
             });
@@ -43,7 +44,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
 
     }
 
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
 
 

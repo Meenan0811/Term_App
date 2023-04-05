@@ -18,15 +18,6 @@ public class Course {
     private String startDate;
     private String endDate;
     private String courseStatus;
-
-    public int getTermID_FK() {
-        return termID_FK;
-    }
-
-    public void setTermID_FK(int termID_FK) {
-        this.termID_FK = termID_FK;
-    }
-
     private int termID_FK;
 
 
@@ -38,7 +29,6 @@ public class Course {
         this.endDate = endDate;
         this.courseStatus = courseStatus;
         this.termID_FK = termId_FK;
-
     }
 
     public Course() {}
@@ -83,9 +73,9 @@ public class Course {
         this.courseStatus = courseStatus;
     }
 
-    public int getTermId_FK() { return termID_FK; }
+    public int getTermID_FK() { return termID_FK; }
 
-    public void setTermId_FK(int termId_FK) {
+    public void setTermID_FK(int termId_FK) {
         this.termID_FK = termId_FK;
     }
 

@@ -1,6 +1,8 @@
 package com.Meenan.Term_App.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.Meenan.Term_App.Database.Repository;
+import com.Meenan.Term_App.Entities.Course;
 import com.Meenan.Term_App.Entities.Term;
 import com.Meenan.Term_App.R;
 
@@ -41,11 +44,43 @@ public class ModifyTerm extends AppCompatActivity {
         editName = findViewById(R.id.termNameEdit);
         editStart = findViewById(R.id.termStartEdit);
         editEnd = findViewById(R.id.termEndEdit);
-        termId = getIntent().getIntExtra("id", -1);
-        mTermName = getIntent().getStringExtra("name");
+        termId = getIntent().getIntExtra("termID", -1);
+        mTermName = getIntent().getStringExtra("termName");
         startDate = getIntent().getStringExtra("startDate");
         endDate = getIntent().getStringExtra("endDate");
         repository = new Repository(getApplication());
+
+        if (termId != -1) {
+            editName.setText(mTermName);
+            editStart.setText(startDate);
+            editEnd.setText(endDate);
+
+            RecyclerView cRecyclerView = findViewById(R.id.assignedcourserecyclerview);
+            final CourseAdapter courseAdapter = new CourseAdapter(this);
+            cRecyclerView.setAdapter(courseAdapter);
+            cRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+            List<Course> allCourses;
+
+//FIXME: Added toast method to test loop, cannot return
+            try {
+                //allCourses = repository.getAllTermCourses(termId);
+                allCourses = repository.getAllCourses();
+                int numMatches = 0;
+                for (Course c : allCourses) {
+                    if (c.getTermID_FK() == termId) {
+                        ++numMatches;
+                    }
+                }
+                Toast.makeText(this,"Total: " + numMatches, Toast.LENGTH_LONG).show();
+                if (allCourses != null) {
+                    courseAdapter.setTerms(allCourses);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         saveTerm = findViewById(R.id.savetermbutton);
         saveTerm.setOnClickListener(new View.OnClickListener() {
