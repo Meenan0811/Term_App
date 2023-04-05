@@ -67,10 +67,12 @@
                 android:id="@+id/termStartEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="none"
                 android:layout_marginLeft="35dp"
                 android:hint="01/01/2023"
                 tools:layout_editor_absoluteX="171dp"
-                tools:layout_editor_absoluteY="161dp" />
+                tools:layout_editor_absoluteY="161dp"
+                />
         </LinearLayout>
 
         <LinearLayout

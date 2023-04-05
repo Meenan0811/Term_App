@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,7 +17,12 @@ import com.Meenan.Term_App.Entities.Course;
 import com.Meenan.Term_App.Entities.Term;
 import com.Meenan.Term_App.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ModifyTerm extends AppCompatActivity {
 
@@ -34,6 +41,10 @@ public class ModifyTerm extends AppCompatActivity {
     List<Term> filteredTerms;
     Button saveTerm;
     Button addCourse;
+    DatePickerDialog.OnDateSetListener startDateCal;
+    DatePickerDialog.OnDateSetListener endDateCale;
+    final Calendar calStart = Calendar.getInstance();
+    final Calendar calEnd = Calendar.getInstance();
 
 
     @Override
@@ -62,7 +73,7 @@ public class ModifyTerm extends AppCompatActivity {
 
             List<Course> allCourses;
 
-//FIXME: Added toast method to test loop, cannot return
+//FIXME: Added toast method to test loop, null pointer exception
             try {
                 //allCourses = repository.getAllTermCourses(termId);
                 allCourses = repository.getAllCourses();
@@ -79,6 +90,9 @@ public class ModifyTerm extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+
+
         }
 
 
@@ -105,5 +119,39 @@ public class ModifyTerm extends AppCompatActivity {
             }
         });
 
+        String calFormat = "MM/dd/yy";
+        SimpleDateFormat sdf = new SimpleDateFormat(calFormat, Locale.US);
+        editStart.setText(sdf.format(new Date()));
+        editStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String initialDate = editStart.getText().toString();
+                if (initialDate.equals("")) initialDate = "01/01/1973";
+
+                try {
+                    calStart.setTime(sdf.parse(initialDate));
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                new DatePickerDialog(ModifyTerm.this, startDateCal, calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH), calStart.get(Calendar.DAY_OF_MONTH)).show();
+
+            }
+        });
+        startDateCal = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                calStart.set(Calendar.YEAR, year);
+                calStart.set(Calendar.MONTH, month);
+                calStart.set(Calendar.DAY_OF_MONTH, day);
+                updateLabelStart();
+            }
+        };
+
+    }
+
+    private void updateLabelStart() {
+        String myFormat = "MM/dd/yy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat,Locale.US);
+        editStart.setText(sdf.format(calStart.getTime()));
     }
 }
