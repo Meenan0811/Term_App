@@ -1,9 +1,16 @@
 package com.Meenan.Term_App.Entities;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Courses")
+@Entity(tableName = "Courses",
+        foreignKeys = @ForeignKey(
+                entity = Term.class,
+                parentColumns = "termID",
+                childColumns = "termID_FK",
+                onDelete = ForeignKey.CASCADE))
+
 public class Course {
     @PrimaryKey(autoGenerate = true)
     private int courseID;
@@ -11,17 +18,27 @@ public class Course {
     private String startDate;
     private String endDate;
     private String courseStatus;
-    private int termId;
+
+    public int getTermID_FK() {
+        return termID_FK;
+    }
+
+    public void setTermID_FK(int termID_FK) {
+        this.termID_FK = termID_FK;
+    }
+
+    private int termID_FK;
 
 
 
 
-    public Course(String courseName, String startDate, String endDate, String courseStatus, int termId) {
+    public Course(String courseName, String startDate, String endDate, String courseStatus, int termId_FK) {
         this.courseName = courseName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.courseStatus = courseStatus;
-        this.termId = termId;
+        this.termID_FK = termId_FK;
+
     }
 
     public Course() {}
@@ -66,11 +83,10 @@ public class Course {
         this.courseStatus = courseStatus;
     }
 
-    public int getTermId() {
-        return termId;
+    public int getTermId_FK() { return termID_FK; }
+
+    public void setTermId_FK(int termId_FK) {
+        this.termID_FK = termId_FK;
     }
 
-    public void setTermId(int termId) {
-        this.termId = termId;
-    }
 }

@@ -14,4 +14,8 @@
         android:title="Add Sample Data"
         android:id="@+id/addsampledata" />
 
+    <item
+        android:title="Delete All Date"
+        android:id="@+id/deleteall" />
+
 </menu>

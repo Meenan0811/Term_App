@@ -1,6 +1,8 @@
 package com.Meenan.Term_App.Entities;
 
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "Term")
@@ -10,6 +12,7 @@ public class Term {
     private String startDate;
     private String endDate;
     private String termName;
+
 
     public Term(String startDate, String endDate, String termName) {
         this.startDate = startDate;

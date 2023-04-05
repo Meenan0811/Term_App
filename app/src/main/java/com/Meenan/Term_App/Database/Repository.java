@@ -4,9 +4,11 @@ import android.app.Application;
 
 import androidx.room.Database;
 
+import com.Meenan.Term_App.DAO.AssesmentDAO;
 import com.Meenan.Term_App.DAO.CourseDAO;
 import com.Meenan.Term_App.DAO.MentorDAO;
 import com.Meenan.Term_App.DAO.TermDAO;
+import com.Meenan.Term_App.Entities.Assesment;
 import com.Meenan.Term_App.Entities.Course;
 import com.Meenan.Term_App.Entities.Mentor;
 import com.Meenan.Term_App.Entities.Term;
@@ -21,10 +23,12 @@ public class Repository {
     private CourseDAO mCourseDAO;
     private TermDAO mTermDAO;
     private MentorDAO mMentorDAO;
+    private AssesmentDAO mAssesmentDAO;
 
     private List<Course> mAllCourses;
     private List<Term> mAllTerms;
     private List<Mentor> mAllMentors;
+    private List<Assesment> mAllAssesments;
 
     private static int NUMBER_OF_THREADS = 4;
     static final ExecutorService dbExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
@@ -34,6 +38,7 @@ public class Repository {
         mCourseDAO = termDb.courseDAO();
         mTermDAO = termDb.termDAO();
         mMentorDAO = termDb.mentorDAO();
+        mAssesmentDAO = termDb.assesmentDAO();
     }
 
     public List<Term> getAllTerms() throws InterruptedException {
@@ -122,4 +127,42 @@ public class Repository {
         });
         Thread.sleep(1000);
     }
+
+    public List<Assesment> getAllAssesments() throws InterruptedException {
+        dbExecutor.execute(() -> {
+            mAllAssesments = mAssesmentDAO.getAllAssesments();
+        });
+        Thread.sleep(1000);
+        return mAllAssesments;
+    }
+
+    public List<Assesment> getAssesmentById(int courseId) throws InterruptedException {
+        dbExecutor.execute(() -> {
+            mAllAssesments = mAssesmentDAO.getAssosicatedAssesment(courseId);
+        });
+        return mAllAssesments;
+    }
+
+    public void insert(Assesment assesment) throws InterruptedException {
+        dbExecutor.execute(() -> {
+            mAssesmentDAO.insert(assesment);
+        });
+        Thread.sleep(1000);
+    }
+
+    public void update(Assesment assesment) throws InterruptedException {
+        dbExecutor.execute(() -> {
+            mAssesmentDAO.update(assesment);
+        });
+        Thread.sleep(1000);
+    }
+
+    public void delete(Assesment assesment) throws InterruptedException {
+        dbExecutor.execute(() -> {
+            mAssesmentDAO.delete(assesment);
+        });
+        Thread.sleep(1000);
+    }
+
+
 }
