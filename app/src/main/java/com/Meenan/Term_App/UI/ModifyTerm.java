@@ -12,13 +12,16 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.Meenan.Term_App.DAO.CourseDAO;
 import com.Meenan.Term_App.Database.Repository;
+import com.Meenan.Term_App.Database.TermCourseDataBase;
 import com.Meenan.Term_App.Entities.Course;
 import com.Meenan.Term_App.Entities.Term;
 import com.Meenan.Term_App.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -71,82 +74,68 @@ public class ModifyTerm extends AppCompatActivity {
             cRecyclerView.setAdapter(courseAdapter);
             cRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-            List<Course> allCourses;
 
-//FIXME: Added toast method to test loop, null pointer exception
+            List<Course> allTermCourses = new ArrayList<>();
             try {
-                //allCourses = repository.getAllTermCourses(termId);
-                allCourses = repository.getAllCourses();
-                int numMatches = 0;
-                for (Course c : allCourses) {
-                    if (c.getTermID_FK() == termId) {
-                        ++numMatches;
-                    }
-                }
-                Toast.makeText(this,"Total: " + numMatches, Toast.LENGTH_LONG).show();
-                if (allCourses != null) {
-                    courseAdapter.setTerms(allCourses);
-                }
+                for (Course c : repository.getAllCourses()) if (c.getTermID_FK() == termId) allTermCourses.add(c);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            if (allTermCourses.size() != 0) {
+                courseAdapter.setTerms(allTermCourses);
+            } else {
+                allTermCourses = null;
+                courseAdapter.setTerms(allTermCourses);
+            }
 
 
+
+            saveTerm = findViewById(R.id.savetermbutton);
+            saveTerm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (termId == -1) {
+                        mTerm = new Term(editStart.getText().toString(), editEnd.getText().toString(), editName.getText().toString());
+                        try {
+                            repository.insert(mTerm);
+                            Toast.makeText(ModifyTerm.this, "Term has Been Saved", Toast.LENGTH_LONG);
+                        } catch (InterruptedException e) {
+                            Toast.makeText(ModifyTerm.this, "Term has not been saved, please ensure all fields are filled out", Toast.LENGTH_LONG);
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+
+            String calFormat = "MM/dd/yy";
+            SimpleDateFormat sdf = new SimpleDateFormat(calFormat, Locale.US);
+            editStart.setText(sdf.format(new Date()));
+            editStart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String initialDate = editStart.getText().toString();
+                    if (initialDate.equals("")) initialDate = "01/01/1973";
+
+                    try {
+                        calStart.setTime(sdf.parse(initialDate));
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    new DatePickerDialog(ModifyTerm.this, startDateCal, calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH), calStart.get(Calendar.DAY_OF_MONTH)).show();
+
+                }
+            });
+            startDateCal = new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                    calStart.set(Calendar.YEAR, year);
+                    calStart.set(Calendar.MONTH, month);
+                    calStart.set(Calendar.DAY_OF_MONTH, day);
+                    updateLabelStart();
+                }
+            };
 
         }
-
-
-        saveTerm = findViewById(R.id.savetermbutton);
-        saveTerm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (termId == -1) {
-                    mTerm = new Term (editStart.getText().toString(), editEnd.getText().toString(), editName.getText().toString());
-                    try {
-                        repository.insert(mTerm);
-                        Toast.makeText(ModifyTerm.this, "Term has Been Saved", Toast.LENGTH_LONG);
-                    } catch (InterruptedException e) {
-                        Toast.makeText(ModifyTerm.this, "Term has not been saved, please ensure all fields are filled out", Toast.LENGTH_LONG);
-                        e.printStackTrace();
-                    }
-                   /* else {
-                        termId = currTerm.getTermID();
-                        mTerm = mTerm.
-                                //FIXME Pass Term and update when termId is found
-                    }*/
-
-                }
-            }
-        });
-
-        String calFormat = "MM/dd/yy";
-        SimpleDateFormat sdf = new SimpleDateFormat(calFormat, Locale.US);
-        editStart.setText(sdf.format(new Date()));
-        editStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String initialDate = editStart.getText().toString();
-                if (initialDate.equals("")) initialDate = "01/01/1973";
-
-                try {
-                    calStart.setTime(sdf.parse(initialDate));
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-                new DatePickerDialog(ModifyTerm.this, startDateCal, calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH), calStart.get(Calendar.DAY_OF_MONTH)).show();
-
-            }
-        });
-        startDateCal = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                calStart.set(Calendar.YEAR, year);
-                calStart.set(Calendar.MONTH, month);
-                calStart.set(Calendar.DAY_OF_MONTH, day);
-                updateLabelStart();
-            }
-        };
-
     }
 
     private void updateLabelStart() {

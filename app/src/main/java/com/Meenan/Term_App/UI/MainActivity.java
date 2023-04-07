@@ -14,7 +14,6 @@ import com.Meenan.Term_App.Database.TermCourseDataBase;
 import com.Meenan.Term_App.Entities.Assesment;
 import com.Meenan.Term_App.Entities.Course;
 import com.Meenan.Term_App.Entities.Mentor;
-import com.Meenan.Term_App.Entities.Term;
 import com.Meenan.Term_App.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,13 +33,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Test Items
-       /* Term term = new Term("01/01/2023", "01/30/2023", "Term 1");
+        /*Term term = new Term("01/01/2023", "01/30/2023", "Term 1");
         Repository repository = new Repository(getApplication());
         try {
             repository.insert(term);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } */
+        }*/
 
     }
 
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             case R.id.viewcourses:
-                intent = new Intent(MainActivity.this, ViewCourses.class);
+                intent = new Intent(MainActivity.this, ModifyCourses.class);
                 startActivity(intent);
                 return true;
 
@@ -71,9 +70,9 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.addsampledata:
                 Repository repository = new Repository(getApplication());
-                Course course = new Course("New Course", "01/01/23", "01/31/23", "In Progress", 3);
-                Mentor mentor = new Mentor("M.Meenan","6093434720", "mentor1@wgu.edu",2 );
-                Assesment assesment = new Assesment("C146 Assesment", "01/31/23", "Performance",2);
+                Course course = new Course("New Course", "01/01/23", "01/31/23", "In Progress", 1);
+                Mentor mentor = new Mentor("M.Meenan","6093434720", "mentor1@wgu.edu", 1);
+                Assesment assesment = new Assesment("C146 Assesment", "01/31/23", "Performance",1);
                 try {
                     repository.insert(course);
                     repository.insert(mentor);
