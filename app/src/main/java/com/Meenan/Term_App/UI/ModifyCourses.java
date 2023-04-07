@@ -26,6 +26,7 @@ public class ModifyCourses extends AppCompatActivity {
         EditText editCourseName;
         EditText editCourseStart;
         EditText editCourseEnd;
+        int courseId;
         String courseName;
         String courseStatus;
         String courseStartDate;
@@ -51,6 +52,20 @@ public class ModifyCourses extends AppCompatActivity {
         curMentorEmail = findViewById(R.id.curinstructoremail);
         curMentorPhone = findViewById(R.id.curinstructorphone);
         addMentorFb = findViewById(R.id.editmentorfb);
+
+        courseId = getIntent().getIntExtra("courseID", -1);
+        courseName = getIntent().getStringExtra("courseName");
+        courseStatus = getIntent().getStringExtra("courseStatus");
+        courseStartDate = getIntent().getStringExtra("courseStart");
+        courseEndDate = getIntent().getStringExtra("courseEnd");
+
+        if (courseId != -1) {
+            editCourseName.setText(courseName);
+            editCourseStart.setText(courseStartDate);
+            editCourseEnd.setText(courseEndDate);
+            //FIXME: add spinner information for course Status
+        }
+
 
         RecyclerView recyclerView = findViewById(R.id.courserecyclerview);
         final CourseAdapter courseAdapter = new CourseAdapter(this);
