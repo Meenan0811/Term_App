@@ -55,9 +55,9 @@ public class ModifyCourses extends AppCompatActivity {
 
         courseId = getIntent().getIntExtra("courseID", -1);
         courseName = getIntent().getStringExtra("courseName");
-        courseStatus = getIntent().getStringExtra("courseStatus");
-        courseStartDate = getIntent().getStringExtra("courseStart");
-        courseEndDate = getIntent().getStringExtra("courseEnd");
+        courseStatus = getIntent().getStringExtra("status");
+        courseStartDate = getIntent().getStringExtra("startDate");
+        courseEndDate = getIntent().getStringExtra("endDate");
 
         if (courseId != -1) {
             editCourseName.setText(courseName);

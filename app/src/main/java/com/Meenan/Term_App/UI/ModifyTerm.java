@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +19,7 @@ import com.Meenan.Term_App.Database.TermCourseDataBase;
 import com.Meenan.Term_App.Entities.Course;
 import com.Meenan.Term_App.Entities.Term;
 import com.Meenan.Term_App.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,7 +45,7 @@ public class ModifyTerm extends AppCompatActivity {
     List<Term> allTerms;
     List<Term> filteredTerms;
     Button saveTerm;
-    Button addCourse;
+    FloatingActionButton addCourse;
     DatePickerDialog.OnDateSetListener startDateCal;
     DatePickerDialog.OnDateSetListener endDateCale;
     final Calendar calStart = Calendar.getInstance();
@@ -63,6 +65,7 @@ public class ModifyTerm extends AppCompatActivity {
         startDate = getIntent().getStringExtra("startDate");
         endDate = getIntent().getStringExtra("endDate");
         repository = new Repository(getApplication());
+
 
         if (termId != -1) {
             editName.setText(mTermName);
@@ -98,12 +101,22 @@ public class ModifyTerm extends AppCompatActivity {
                         mTerm = new Term(editStart.getText().toString(), editEnd.getText().toString(), editName.getText().toString());
                         try {
                             repository.insert(mTerm);
-                            Toast.makeText(ModifyTerm.this, "Term has Been Saved", Toast.LENGTH_LONG);
+                            Toast.makeText(ModifyTerm.this, "Term has Been Saved", Toast.LENGTH_LONG).show();
                         } catch (InterruptedException e) {
-                            Toast.makeText(ModifyTerm.this, "Term has not been saved, please ensure all fields are filled out", Toast.LENGTH_LONG);
+                            Toast.makeText(ModifyTerm.this, "Term has not been saved, please ensure all fields are filled out", Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
                     }
+                }
+            });
+
+            addCourse = findViewById(R.id.addcoursefb);
+            addCourse.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ModifyTerm.this, ModifyCourses.class);
+                    startActivity(intent);
                 }
             });
 

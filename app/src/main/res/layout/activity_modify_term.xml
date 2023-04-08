@@ -67,12 +67,11 @@
                 android:id="@+id/termStartEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="none"
                 android:layout_marginLeft="35dp"
                 android:hint="01/01/2023"
+                android:inputType="none"
                 tools:layout_editor_absoluteX="171dp"
-                tools:layout_editor_absoluteY="161dp"
-                />
+                tools:layout_editor_absoluteY="161dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -113,19 +112,6 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         app:layout_constraintVertical_bias="0.072" />
 
-    <Button
-        android:id="@+id/addcoursebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:text="Add Course"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assignedcourserecyclerview"
-        app:layout_constraintVertical_bias="0.458" />
-
     <TextView
         android:id="@+id/assignedcourselist"
         android:layout_width="wrap_content"
@@ -138,6 +124,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/savetermbutton" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addcoursefb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/assignedcourserecyclerview"
         android:layout_width="wrap_content"
@@ -147,5 +144,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/assignedcourselist" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

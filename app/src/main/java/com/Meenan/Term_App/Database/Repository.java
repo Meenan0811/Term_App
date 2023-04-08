@@ -78,7 +78,7 @@ public class Repository {
         return mAllCourses;
     }
 
-    public List<Course> getAllTermCourses(int termID) {
+    public List<Course> getAllTermCourses(int termID) throws InterruptedException {
         dbExecutor.execute(() -> {
             mAllCourses = mCourseDAO.getAllTermCourses(termID);
         });
