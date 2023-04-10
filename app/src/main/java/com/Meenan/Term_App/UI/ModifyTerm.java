@@ -80,7 +80,8 @@ public class ModifyTerm extends AppCompatActivity {
 
             List<Course> allTermCourses = new ArrayList<>();
             try {
-                for (Course c : repository.getAllCourses()) if (c.getTermID_FK() == termId) allTermCourses.add(c);
+                for (Course c : repository.getAllCourses())
+                    if (c.getTermID_FK() == termId) allTermCourses.add(c);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -90,6 +91,7 @@ public class ModifyTerm extends AppCompatActivity {
                 allTermCourses = null;
                 courseAdapter.setTerms(allTermCourses);
             }
+        }
 
 
 
@@ -106,6 +108,15 @@ public class ModifyTerm extends AppCompatActivity {
                             Toast.makeText(ModifyTerm.this, "Term has not been saved, please ensure all fields are filled out", Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
+                    } else {
+                        mTerm = new Term(editStart.getText().toString(), editEnd.getText().toString(), editName.getText().toString());
+                        try {
+                            repository.update(mTerm);
+                            Toast.makeText(ModifyTerm.this, "Term has Been Updated", Toast.LENGTH_LONG).show();
+                        } catch (InterruptedException e) {
+                            Toast.makeText(ModifyTerm.this, "Term has not been updated, please ensure all fields are filled out", Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
@@ -120,7 +131,7 @@ public class ModifyTerm extends AppCompatActivity {
                 }
             });
 
-            String calFormat = "MM/dd/yy";
+            String calFormat = "MM/dd/yyyy";
             SimpleDateFormat sdf = new SimpleDateFormat(calFormat, Locale.US);
             editStart.setText(sdf.format(new Date()));
             editStart.setOnClickListener(new View.OnClickListener() {
@@ -148,12 +159,12 @@ public class ModifyTerm extends AppCompatActivity {
                 }
             };
 
-        }
+
     }
 
     private void updateLabelStart() {
-        String myFormat = "MM/dd/yy";
+        String myFormat = "MM/dd/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat,Locale.US);
-        editStart.setText(sdf.format(calStart.getTime()));
+        //editStart.setText(sdf.format(calStart.getTime()));
     }
 }
