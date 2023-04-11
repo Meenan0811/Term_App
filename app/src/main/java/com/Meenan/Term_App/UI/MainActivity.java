@@ -74,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
                 Mentor mentor = new Mentor("New Mentor","1234567890", "mentor2@wgu.edu", 1);
                 Assesment assesment = new Assesment("C146 Assesment", "01/31/23", "Performance",1);
                 try {
-                    //repository.insert(course);
+                    repository.insert(course);
                     repository.insert(mentor);
-                    //repository.insert(assesment);
+                    repository.insert(assesment);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -37,9 +38,11 @@ public class ModifyCourses extends AppCompatActivity {
     private FloatingActionButton addMentorFb;
     private Spinner mentorNamesSpinner;
     private Spinner courseStatusSpinner;
-    Course course;
+    private Course course;
     private Repository repository;
     private List<Mentor> allMentors = new ArrayList<>();
+    private Button saveCourseButton;
+
 
 
     @Override
@@ -100,6 +103,8 @@ public class ModifyCourses extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
+
+
         });
 
 
@@ -111,6 +116,16 @@ public class ModifyCourses extends AppCompatActivity {
             int curposition = ad.getPosition(courseStatus);
             courseStatusSpinner.setSelection(curposition);
         }
+
+        saveCourseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (courseId == -1) {
+                    courseStatus = courseStatusSpinner.getSelectedItem().toString();
+                    course = new Course(editCourseName.getText().toString(), editCourseStart.getText().toString(), editCourseEnd.getText().toString(), courseStatus, 2);
+                }
+            }
+        });
 
 
     }
