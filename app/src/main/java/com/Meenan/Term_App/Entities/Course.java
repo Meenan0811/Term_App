@@ -31,6 +31,7 @@ public class Course {
         this.termID_FK = termId_FK;
     }
 
+
     public Course() {}
 
     public int getCourseID() {

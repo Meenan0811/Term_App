@@ -109,7 +109,7 @@ public class ModifyTerm extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     } else {
-                        mTerm = new Term(editStart.getText().toString(), editEnd.getText().toString(), editName.getText().toString());
+                        mTerm = new Term(termId, editStart.getText().toString(), editEnd.getText().toString(), editName.getText().toString());
                         try {
                             repository.update(mTerm);
                             Toast.makeText(ModifyTerm.this, "Term has Been Updated", Toast.LENGTH_LONG).show();
@@ -118,6 +118,8 @@ public class ModifyTerm extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
+                    Intent intent = new Intent(ModifyTerm.this, ViewTerm.class);
+                    startActivity(intent);
                 }
             });
 
@@ -126,7 +128,7 @@ public class ModifyTerm extends AppCompatActivity {
 
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(ModifyTerm.this, ModifyCourses.class);
+                    Intent intent = new Intent(ModifyTerm.this, ViewCourses.class);
                     startActivity(intent);
                 }
             });

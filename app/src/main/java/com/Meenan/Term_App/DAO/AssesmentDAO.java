@@ -26,6 +26,6 @@ public interface AssesmentDAO {
     @Query("SELECT * FROM Assesments" )
     List<Assesment> getAllAssesments();
 
-    @Query("SELECT * FROM Assesments where AssesmentId = :assesmentId")
+    @Query("SELECT * FROM Assesments where assesmentId = :assesmentId")
     List<Assesment> getAssosicatedAssesment(int assesmentId);
 }

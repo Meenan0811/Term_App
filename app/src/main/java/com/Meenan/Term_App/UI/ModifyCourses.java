@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import com.Meenan.Term_App.Entities.Course;
 import com.Meenan.Term_App.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ModifyCourses extends AppCompatActivity {
@@ -41,6 +43,7 @@ public class ModifyCourses extends AppCompatActivity {
         Spinner courseStatusSpinner;
         Course course;
         Repository repository;
+        
 
 
 
@@ -59,6 +62,15 @@ public class ModifyCourses extends AppCompatActivity {
         courseStartDate = getIntent().getStringExtra("startDate");
         courseEndDate = getIntent().getStringExtra("endDate");
 
+        //Populate Spinner
+        ArrayList<String> courseArrayList = new ArrayList<>();
+        ArrayAdapter<CharSequence> ad = ArrayAdapter.createFromResource(this, R.array.course_status, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        ad.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        courseStatusSpinner.setAdapter(ad);
+
+
+
+
         if (courseId != -1) {
             editCourseName.setText(courseName);
             editCourseStart.setText(courseStartDate);
@@ -67,23 +79,10 @@ public class ModifyCourses extends AppCompatActivity {
         }
 
 
-        RecyclerView recyclerView = findViewById(R.id.courserecyclerview);
-        final CourseAdapter courseAdapter = new CourseAdapter(this);
-        recyclerView.setAdapter(courseAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        repository = new Repository(getApplication());
-        List<Course> allCourses = null;
-        try {
-            allCourses = repository.getAllCourses();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        courseAdapter.setTerms(allCourses);
-
     }
 
     public void updateCourse(int courseId) {
+
 
     }
 }

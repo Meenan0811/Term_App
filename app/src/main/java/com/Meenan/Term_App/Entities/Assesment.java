@@ -13,23 +13,33 @@ import androidx.room.PrimaryKey;
         ))
 public class Assesment {
 
+    public int getAssesmentID() {
+        return assesmentID;
+    }
+
+    public void setAssesmentID(int assesmentID) {
+        this.assesmentID = assesmentID;
+    }
+
     @PrimaryKey(autoGenerate = true)
-    private int AssesmentId;
-    private String Name;
+    private int assesmentID;
+    private String name;
     private String endDate;
     private String type;
     private int courseID_FK;
 
-    public int getCourseID_FK() {
-        return courseID_FK;
-    }
 
-    public void setCourseID_FK(int courseID_FK) {
+
+    public Assesment(String name, String endDate, String type, int courseID_FK) {
+        this.name = name;
+        this.endDate = endDate;
+        this.type = type;
         this.courseID_FK = courseID_FK;
     }
 
-    public Assesment(String name, String endDate, String type, int courseID_FK) {
-        Name = name;
+    public Assesment(int assesmentId, String name, String endDate, String type, int courseID_FK) {
+        this.assesmentID = assesmentId;
+        this.name = name;
         this.endDate = endDate;
         this.type = type;
         this.courseID_FK = courseID_FK;
@@ -38,17 +48,17 @@ public class Assesment {
     public Assesment() {}
 
     public int getAssesmentId() {
-        return AssesmentId;
+        return assesmentID;
     }
 
-    public void setAssesmentId(int id) { AssesmentId = id; }
+    public void setAssesmentId(int id) { assesmentID = id; }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        name = name;
     }
 
     public String getEndDate() {
@@ -65,5 +75,13 @@ public class Assesment {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getCourseID_FK() {
+        return courseID_FK;
+    }
+
+    public void setCourseID_FK(int courseID_FK) {
+        this.courseID_FK = courseID_FK;
     }
 }

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Term_App</string>
+
+    <string-array name="course_status">
+        <item>In-Progress</item>
+        <item>Completed</item>
+    </string-array>
 </resources>

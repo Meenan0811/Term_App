@@ -20,6 +20,13 @@ public class Term {
         this.termName = termName;
     }
 
+    public Term(int termID, String startDate, String endDate, String termName) {
+        this.termID = termID;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.termName = termName;
+    }
+
     public Term() {}
 
     public int getTermID() {
