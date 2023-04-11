@@ -70,13 +70,13 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.addsampledata:
                 Repository repository = new Repository(getApplication());
-                Course course = new Course("New Course", "01/01/23", "01/31/23", "In Progress", 1);
-                Mentor mentor = new Mentor("M.Meenan","6093434720", "mentor1@wgu.edu", 1);
+                Course course = new Course("Newer Course", "01/01/23", "01/31/23", "Completed", 1);
+                Mentor mentor = new Mentor("New Mentor","1234567890", "mentor2@wgu.edu", 1);
                 Assesment assesment = new Assesment("C146 Assesment", "01/31/23", "Performance",1);
                 try {
-                    repository.insert(course);
+                    //repository.insert(course);
                     repository.insert(mentor);
-                    repository.insert(assesment);
+                    //repository.insert(assesment);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
