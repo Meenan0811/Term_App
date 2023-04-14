@@ -1,22 +1,21 @@
 package com.Meenan.Term_App.UI;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.Meenan.Term_App.Database.Repository;
 import com.Meenan.Term_App.Entities.Course;
 import com.Meenan.Term_App.Entities.Mentor;
+import com.Meenan.Term_App.Entities.Term;
 import com.Meenan.Term_App.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -38,10 +37,12 @@ public class ModifyCourses extends AppCompatActivity {
     private FloatingActionButton addMentorFb;
     private Spinner mentorNamesSpinner;
     private Spinner courseStatusSpinner;
-    private Course course;
+    private Spinner termSpinner;
+    private Course mCourse;
     private Repository repository;
     private List<Mentor> allMentors = new ArrayList<>();
     private Button saveCourseButton;
+    private List<Term> allTerms = new ArrayList<>();
 
 
 
@@ -61,6 +62,7 @@ public class ModifyCourses extends AppCompatActivity {
         mentorEmail = findViewById(R.id.curinstructoremail);
         mentorPhone = findViewById(R.id.curinstructorphone);
         addMentorFb = findViewById(R.id.editmentorfb);
+        termSpinner = findViewById(R.id.termspinner);
 
         //Retrieve passed course information
         courseId = getIntent().getIntExtra("courseID", -1);
@@ -68,6 +70,7 @@ public class ModifyCourses extends AppCompatActivity {
         courseStatus = getIntent().getStringExtra("status");
         courseStartDate = getIntent().getStringExtra("startDate");
         courseEndDate = getIntent().getStringExtra("endDate");
+
 
 
         //Populate Course Status Spinner
@@ -107,6 +110,24 @@ public class ModifyCourses extends AppCompatActivity {
 
         });
 
+        //Populate Term Spinner
+        repository = new Repository(getApplication());
+        List<String> termList;
+        try {
+            allTerms = repository.getAllTerms();
+            termList = new ArrayList<>();
+            for (Term t : allTerms) {
+                String curTerm = t.getTermName();
+                termList.add(curTerm);
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        ArrayAdapter<CharSequence> termAd = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        termAd.addAll(termList);
+        termSpinner.setAdapter(termAd);
+
+
 
         //Populate passed Course information if available
         if (courseId != -1) {
@@ -117,24 +138,63 @@ public class ModifyCourses extends AppCompatActivity {
             courseStatusSpinner.setSelection(curposition);
         }
 
+        saveCourseButton = findViewById(R.id.addcoursebutton);
         saveCourseButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+
                 if (courseId == -1) {
-                    courseStatus = courseStatusSpinner.getSelectedItem().toString();
-                    course = new Course(editCourseName.getText().toString(), editCourseStart.getText().toString(), editCourseEnd.getText().toString(), courseStatus, 2);
+                    int termID = 0;
+                    try {
+                        allTerms = repository.getAllTerms();
+                        String termName = termSpinner.getSelectedItem().toString();
+                        for (Term t : allTerms) {
+                            String curTerm = t.getTermName();
+                            Toast.makeText(ModifyCourses.this, "Course has been Added, Term Name: " + t.getTermName(), Toast.LENGTH_LONG).show();
+                            if (termName.equals(curTerm)) {
+                                termID = t.getTermID();
+                                courseStatus = courseStatusSpinner.getSelectedItem().toString();
+                                mCourse = new Course(editCourseName.getText().toString(), editCourseStart.getText().toString(), editCourseEnd.getText().toString(), courseStatus, termID);
+                                Toast.makeText(ModifyCourses.this, "Course has been Added, Term ID: " + termID, Toast.LENGTH_LONG).show();
+                                try {
+                                    repository.insert(mCourse);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        }
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }else {
+                    int termID = 0;
+                    try {
+                        allTerms = repository.getAllTerms();
+                        String termName = termSpinner.getSelectedItem().toString();
+                        for (Term t : allTerms) {
+                            String curTerm = t.getTermName();
+                            Toast.makeText(ModifyCourses.this, "Course has been Added, Term Name: " + t.getTermName(), Toast.LENGTH_LONG).show();
+                            if (termName.equals(curTerm)) {
+                                termID = t.getTermID();
+                                mCourse = new Course(courseId, editCourseName.getText().toString(), editCourseStart.getText().toString(), editCourseEnd.getText().toString(), courseStatus, termID);
+                                try {
+                                    repository.update(mCourse);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                Toast.makeText(ModifyCourses.this, "Course has been Updated, Term ID: " + termID, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
 
-
-    }
-
-    public void updateCourse(int courseId) {
-
-    }
-
-    public void addCourse() {
 
     }
 

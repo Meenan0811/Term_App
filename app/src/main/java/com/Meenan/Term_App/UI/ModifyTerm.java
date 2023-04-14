@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -129,11 +130,13 @@ public class ModifyTerm extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(ModifyTerm.this, ViewCourses.class);
+                    intent.putExtra("Term_ID", termId);
                     startActivity(intent);
                 }
             });
 
-            String calFormat = "MM/dd/yyyy";
+
+            /*String calFormat = "MM/dd/yyyy";
             SimpleDateFormat sdf = new SimpleDateFormat(calFormat, Locale.US);
             editStart.setText(sdf.format(new Date()));
             editStart.setOnClickListener(new View.OnClickListener() {
@@ -148,9 +151,9 @@ public class ModifyTerm extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
                     new DatePickerDialog(ModifyTerm.this, startDateCal, calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH), calStart.get(Calendar.DAY_OF_MONTH)).show();
-
                 }
             });
+
             startDateCal = new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -159,14 +162,14 @@ public class ModifyTerm extends AppCompatActivity {
                     calStart.set(Calendar.DAY_OF_MONTH, day);
                     updateLabelStart();
                 }
-            };
+            };*/
 
 
     }
 
-    private void updateLabelStart() {
+    /*private void updateLabelStart() {
         String myFormat = "MM/dd/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat,Locale.US);
         //editStart.setText(sdf.format(calStart.getTime()));
-    }
+    }*/
 }

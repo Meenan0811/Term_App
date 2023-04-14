@@ -31,6 +31,15 @@ public class Course {
         this.termID_FK = termId_FK;
     }
 
+    public Course(int courseID, String courseName, String startDate, String endDate, String courseStatus, int termId_FK) {
+        this.courseID = courseID;
+        this.courseName = courseName;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.courseStatus = courseStatus;
+        this.termID_FK = termId_FK;
+    }
+
 
     public Course() {}
 
