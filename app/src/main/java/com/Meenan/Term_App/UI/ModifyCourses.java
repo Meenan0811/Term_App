@@ -219,6 +219,9 @@ public class ModifyCourses extends AppCompatActivity {
                 mentorEmail.setText(m.getEmail());
                 mentorPhone.setText(m.getPhone());
             }
+            if (courseId == m.getCourseID_FK()) {
+
+            }
         }
     }
 
@@ -226,15 +229,15 @@ public class ModifyCourses extends AppCompatActivity {
         for (Mentor m : allMentors) {
             if (mentorName.equals(m.getMentorName())) {
                 if (courseId == m.getCourseID_FK() || courseId == -1) {
-                Mentor mentor = new Mentor(m.getMentorID(), mentorName, mentorEmail.getText().toString(), mentorPhone.getText().toString(), courseId);
-                repository.update(mentor);
-                }
-                else {
-                    for (Mentor mm : allMentors) {
-                        if (courseId == m.getCourseID_FK()) repository.delete(m);
-                    }
+                    Mentor mentor = new Mentor(m.getMentorID(), mentorName, mentorEmail.getText().toString(), mentorPhone.getText().toString(), courseId);
+                    repository.update(mentor);
+                } else {
+                    repository.delete(m);
+                    Toast.makeText(ModifyCourses.this, "Deleted existing mentor", Toast.LENGTH_LONG).show();
+
                     Mentor mentor = new Mentor(mentorName, mentorEmail.getText().toString(), mentorPhone.getText().toString(), courseId);
                     repository.insert(mentor);
+
                 }
             }
         }
