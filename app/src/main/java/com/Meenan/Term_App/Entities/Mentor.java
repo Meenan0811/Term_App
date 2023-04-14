@@ -36,6 +36,14 @@ public class Mentor {
         this.courseID_FK = courseID_FK;
     }
 
+    public Mentor(int mentorID, String mentorName, String phone, String email, int courseID_FK) {
+        this.mentorID = mentorID;
+        this.mentorName = mentorName;
+        this.phone = phone;
+        this.email = email;
+        this.courseID_FK = courseID_FK;
+    }
+
     public Mentor() {}
 
     public int getMentorID() {

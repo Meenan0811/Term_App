@@ -1,5 +1,6 @@
 package com.Meenan.Term_App.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,6 +44,7 @@ public class ModifyCourses extends AppCompatActivity {
     private List<Mentor> allMentors = new ArrayList<>();
     private Button saveCourseButton;
     private List<Term> allTerms = new ArrayList<>();
+    private Button addMentor;
 
 
 
@@ -63,6 +65,7 @@ public class ModifyCourses extends AppCompatActivity {
         mentorPhone = findViewById(R.id.curinstructorphone);
         addMentorFb = findViewById(R.id.editmentorfb);
         termSpinner = findViewById(R.id.termspinner);
+        addMentor = findViewById(R.id.addmentorbutton);
 
         //Retrieve passed course information
         courseId = getIntent().getIntExtra("courseID", -1);
@@ -159,6 +162,7 @@ public class ModifyCourses extends AppCompatActivity {
                                 Toast.makeText(ModifyCourses.this, "Course has been Added, Term ID: " + termID, Toast.LENGTH_LONG).show();
                                 try {
                                     repository.insert(mCourse);
+                                    addCourseMentor(mentorNamesSpinner.getSelectedItem().toString(), courseId);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -182,6 +186,7 @@ public class ModifyCourses extends AppCompatActivity {
                                 mCourse = new Course(courseId, editCourseName.getText().toString(), editCourseStart.getText().toString(), editCourseEnd.getText().toString(), courseStatus, termID);
                                 try {
                                     repository.update(mCourse);
+                                    addCourseMentor(mentorNamesSpinner.getSelectedItem().toString(), courseId);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -192,6 +197,14 @@ public class ModifyCourses extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
                 }
+            }
+        });
+
+        addMentor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ModifyCourses.this, ViewMentors.class);
+                startActivity(intent);
             }
         });
 
@@ -208,4 +221,23 @@ public class ModifyCourses extends AppCompatActivity {
             }
         }
     }
+
+    public void addCourseMentor(String mentorName, int courseId) throws InterruptedException {
+        for (Mentor m : allMentors) {
+            if (mentorName.equals(m.getMentorName())) {
+                if (courseId == m.getCourseID_FK() || courseId == -1) {
+                Mentor mentor = new Mentor(m.getMentorID(), mentorName, mentorEmail.getText().toString(), mentorPhone.getText().toString(), courseId);
+                repository.update(mentor);
+                }
+                else {
+                    for (Mentor mm : allMentors) {
+                        if (courseId == m.getCourseID_FK()) repository.delete(m);
+                    }
+                    Mentor mentor = new Mentor(mentorName, mentorEmail.getText().toString(), mentorPhone.getText().toString(), courseId);
+                    repository.insert(mentor);
+                }
+            }
+        }
+    }
+
 }
