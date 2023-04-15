@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Term_App</string>
+    <string name="add_term">Add Term</string>
+    <string name="term_name">Term Name:</string>
 
     <string-array name="course_status">
         <item>In-Progress</item>

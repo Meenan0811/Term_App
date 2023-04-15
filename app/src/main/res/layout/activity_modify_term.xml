@@ -6,123 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".UI.ModifyTerm">
 
-    <TextView
-        android:id="@+id/modifyTermLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Modify or Add Terms"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/termName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Term Name:"
-                android:textSize="20sp"
-                tools:layout_editor_absoluteX="30dp"
-                tools:layout_editor_absoluteY="91dp" />
-
-            <EditText
-                android:id="@+id/termNameEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:hint="Term Name"
-                tools:layout_editor_absoluteX="171dp"
-                tools:layout_editor_absoluteY="84dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/startDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Start Date:"
-                android:textSize="20sp"
-                tools:layout_editor_absoluteX="42dp"
-                tools:layout_editor_absoluteY="180dp" />
-
-            <EditText
-                android:id="@+id/termStartEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="35dp"
-                android:hint="01/01/2023"
-                android:inputType="none"
-                tools:layout_editor_absoluteX="171dp"
-                tools:layout_editor_absoluteY="161dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/endDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="End Date:"
-                android:textSize="20sp"
-                tools:layout_editor_absoluteX="38dp"
-                tools:layout_editor_absoluteY="246dp" />
-
-            <EditText
-                android:id="@+id/termEndEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:hint="01/31/2023"
-                tools:layout_editor_absoluteX="171dp"
-                tools:layout_editor_absoluteY="232dp" />
-        </LinearLayout>
-        >
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/savetermbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:text="Save Term"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.072" />
 
     <TextView
         android:id="@+id/assignedcourselist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="20dp"
         android:text="Assigned Courses"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/savetermbutton" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addcoursefb"

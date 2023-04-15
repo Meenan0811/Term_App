@@ -28,7 +28,7 @@ public class ViewTerm extends AppCompatActivity {
         fButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ViewTerm.this, ModifyTerm.class);
+                Intent intent = new Intent(ViewTerm.this, AddTerm.class);
                 startActivity(intent);
             }
         });
