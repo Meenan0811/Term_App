@@ -36,7 +36,7 @@ public class TermDetails extends AppCompatActivity {
     int numTerms;
     List<Term> allTerms;
     List<Term> filteredTerms;
-    Button saveTerm;
+    Button editTerm;
     FloatingActionButton addCourse;
     DatePickerDialog.OnDateSetListener startDateCal;
     DatePickerDialog.OnDateSetListener endDateCale;
@@ -87,33 +87,18 @@ public class TermDetails extends AppCompatActivity {
 
 
 
-            /*saveTerm = findViewById(R.id.savetermbutton);
-            saveTerm.setOnClickListener(new View.OnClickListener() {
+            editTerm = findViewById(R.id.edittermbutton);
+            editTerm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (termId == -1) {
-                        mTerm = new Term(editStart.getText().toString(), editEnd.getText().toString(), editName.getText().toString());
-                        try {
-                            repository.insert(mTerm);
-                            Toast.makeText(ModifyTerm.this, "Term has Been Saved", Toast.LENGTH_LONG).show();
-                        } catch (InterruptedException e) {
-                            Toast.makeText(ModifyTerm.this, "Term has not been saved, please ensure all fields are filled out", Toast.LENGTH_LONG).show();
-                            e.printStackTrace();
-                        }
-                    } else {
-                        mTerm = new Term(termId, editStart.getText().toString(), editEnd.getText().toString(), editName.getText().toString());
-                        try {
-                            repository.update(mTerm);
-                            Toast.makeText(ModifyTerm.this, "Term has Been Updated", Toast.LENGTH_LONG).show();
-                        } catch (InterruptedException e) {
-                            Toast.makeText(ModifyTerm.this, "Term has not been updated, please ensure all fields are filled out", Toast.LENGTH_LONG).show();
-                            e.printStackTrace();
-                        }
-                    }
-                    Intent intent = new Intent(ModifyTerm.this, ViewTerm.class);
+                    Intent intent = new Intent(TermDetails.this, ViewTerm.class);
+                    intent.putExtra("termId", termId);
+                    intent.putExtra("termName", mTermName);
+                    intent.putExtra("termStart", startDate);
+                    intent.putExtra("termEnd", endDate);
                     startActivity(intent);
                 }
-            });*/
+            });
 
             addCourse = findViewById(R.id.addcoursefb);
             addCourse.setOnClickListener(new View.OnClickListener() {
