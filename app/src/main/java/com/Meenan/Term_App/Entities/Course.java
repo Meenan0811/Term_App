@@ -4,12 +4,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Courses"
-        /*foreignKeys = @ForeignKey(
-                entity = Term.class,
-                parentColumns = "termID",
-                childColumns = "termID_FK",
-                onDelete = ForeignKey.CASCADE)*/)
+@Entity(tableName = "Courses")
 
 public class Course {
     @PrimaryKey(autoGenerate = true)

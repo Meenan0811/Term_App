@@ -2,6 +2,8 @@ package com.Meenan.Term_App.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -241,6 +243,33 @@ public class ModifyCourses extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (courseId > 0) {
+            getMenuInflater().inflate(R.menu.course_menu, menu);
+        }
+        return true;
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.deletecourse:
+                if (courseId > 0) {
+                    try {
+                        List<Course> courseList = repository.getAllCourses();
+                        for (Course c : courseList) {
+                            if (c.getCourseID() == courseId) {
+                            repository.delete(c);
+                            Toast.makeText(ModifyCourses.this, "Course " + c.getCourseName() + " deleted", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                }
+        }
+        return true;
     }
 
 }

@@ -28,10 +28,6 @@
             android:exported="false"
             android:parentActivityName=".UI.MainActivity" />
         <activity
-            android:name=".UI.ModifyTerm"
-            android:exported="false"
-            android:parentActivityName=".UI.ViewTerm" />
-        <activity
             android:name=".UI.TermDetails"
             android:exported="false"
             android:parentActivityName=".UI.ViewTerm" />

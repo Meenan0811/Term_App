@@ -33,18 +33,22 @@ public class AddTerm extends AppCompatActivity {
 
         termName = findViewById(R.id.termNameEdit);
         termStart = findViewById(R.id.termStartEdit);
-        termStart = findViewById(R.id.termEndEdit);
+        termEnd = findViewById(R.id.termEndEdit);
         repository = new Repository(getApplication());
 
         saveTermButton = findViewById(R.id.savetermbutton);
         saveTermButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (termStart.getText().toString().length() == 12 && termEnd.getText().toString().length() == 12 && !termName.getText().toString().isEmpty()) {
+                String name = termName.getText().toString();
+                String start = termStart.getText().toString();
+                //Toast.makeText(AddTerm.this, "NAme: " + name + " Start: " + start, Toast.LENGTH_LONG).show();
+                String end = termEnd.getText().toString();
+                if (start.length() == 10 && end.length() == 10 && !name.isEmpty()) {
                     mTerm = new Term(termStart.getText().toString(), termEnd.getText().toString(), termName.getText().toString());
-                    Toast.makeText(AddTerm.this, "Term Saved", Toast.LENGTH_LONG).show();
                     try {
                         repository.insert(mTerm);
+                        Toast.makeText(AddTerm.this, "Term Saved", Toast.LENGTH_LONG).show();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                         Toast.makeText(AddTerm.this, "Unable to Save Term, please ensure all fields are filled out correctly", Toast.LENGTH_LONG).show();

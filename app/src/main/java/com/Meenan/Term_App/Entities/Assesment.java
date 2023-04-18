@@ -4,13 +4,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Assesments",
-        foreignKeys = @ForeignKey(
-                entity = Course.class,
-                parentColumns = "courseID",
-                childColumns = "courseID_FK",
-                onDelete = ForeignKey.CASCADE
-        ))
+@Entity(tableName = "Assesments")
 public class Assesment {
 
     public int getAssesmentID() {

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
 
     <item
         android:title="View Terms"
@@ -12,10 +14,12 @@
         android:id="@+id/viewmentors" />
     <item
         android:title="Add Sample Data"
-        android:id="@+id/addsampledata" />
+        android:id="@+id/addsampledata"
+        app:showAsAction="ifRoom"/>
 
     <item
-        android:title="Delete All Date"
+        android:title="Delete All Data"
         android:id="@+id/deleteall" />
+
 
 </menu>

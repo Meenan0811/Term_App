@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.Meenan.Term_App.Database.Repository;
@@ -49,4 +51,5 @@ public class ViewCourses extends AppCompatActivity {
         }
         courseAdapter.setTerms(allCourses);
     }
+
 }
