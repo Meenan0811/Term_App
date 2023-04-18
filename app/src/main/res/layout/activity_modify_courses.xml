@@ -127,8 +127,9 @@
                     android:layout_marginStart="84dp"
                     android:layout_marginTop="20dp"
                     android:hint="01/01/23"
-                    android:singleLine="true"
                     android:textSize="16sp"
+                    android:singleLine="true"
+                    android:inputType="date"
                     app:layout_constraintStart_toEndOf="@+id/coursestart"
                     app:layout_constraintTop_toBottomOf="@+id/editcoursename" />
             </LinearLayout>
@@ -224,19 +225,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="44dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="30dp"
                     android:text="Name:"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/instructorlabel" />
 
-                <Spinner
-                    android:id="@+id/mentornamespinner"
-                    android:layout_width="214dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="96dp"
-                    android:layout_marginTop="32dp"
-                    app:layout_constraintStart_toEndOf="@+id/instructorname"
-                    app:layout_constraintTop_toBottomOf="@+id/instructorlabel" />
+                <TextView
+                    android:id="@+id/mentorname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="150dp"
+                    android:layout_marginTop="30dp"
+                    android:text="TextView" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -255,7 +257,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/instructorname" />
 
                 <TextView
-                    android:id="@+id/curinstructorphone"
+                    android:id="@+id/curinstructoremail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="150dp"
@@ -283,13 +285,13 @@
 
 
                 <TextView
-                    android:id="@+id/curinstructoremail"
+                    android:id="@+id/curinstructorphone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="96dp"
                     android:layout_marginTop="40dp"
                     app:layout_constraintStart_toEndOf="@+id/instructoremail"
-                    app:layout_constraintTop_toBottomOf="@+id/mentornamespinner" />
+                    app:layout_constraintTop_toBottomOf="@+id/mentorname" />
             </LinearLayout>
 
         <LinearLayout

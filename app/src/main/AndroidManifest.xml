@@ -22,7 +22,7 @@
         <activity
             android:name=".UI.ViewMentors"
             android:exported="false"
-            android:parentActivityName=".UI.MainActivity" />
+            android:parentActivityName=".UI.ModifyCourses" />
         <activity
             android:name=".UI.ViewTerm"
             android:exported="false"

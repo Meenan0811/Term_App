@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:title="Set Notification"
+        android:id="@+id/setnotifcation"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:title="Delete Course"
         android:id="@+id/deletecourse"
         app:showAsAction="ifRoom" />
