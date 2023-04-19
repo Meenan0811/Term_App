@@ -43,7 +43,7 @@ public class ModifyCourses extends AppCompatActivity {
     private Spinner termSpinner;
     private Course mCourse;
     private Repository repository;
-    private List<Mentor> allMentors; //= new ArrayList<>();
+    private List<Mentor> allMentors;
     private Button saveCourseButton;
     private List<Term> allTerms = new ArrayList<>();
     private Button addMentor;
@@ -287,6 +287,8 @@ public class ModifyCourses extends AppCompatActivity {
                     }
                     return true;
                 }
+            case R.id.setnotifcation:
+
         }
         return true;
     }
