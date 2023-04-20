@@ -15,13 +15,7 @@ public class Mentor {
     private String email;
     private int courseID_FK;
 
-    public int getCourseID_FK() {
-        return courseID_FK;
-    }
 
-    public void setCourseID_FK(int courseID_FK) {
-        this.courseID_FK = courseID_FK;
-    }
 
     public Mentor(String mentorName, String phone, String email, int courseID_FK) {
         this.mentorName = mentorName;
@@ -70,5 +64,13 @@ public class Mentor {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getCourseID_FK() {
+        return courseID_FK;
+    }
+
+    public void setCourseID_FK(int courseID_FK) {
+        this.courseID_FK = courseID_FK;
     }
 }

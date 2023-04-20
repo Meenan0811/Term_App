@@ -106,7 +106,7 @@ public class TermDetails extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(TermDetails.this, ViewCourses.class);
-                    intent.putExtra("Term_ID", termId);
+                    intent.putExtra("termId", termId);
                     startActivity(intent);
                 }
             });

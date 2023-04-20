@@ -10,6 +10,10 @@
     <item
         android:title="Delete Course"
         android:id="@+id/deletecourse"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
+    <item
+        android:title="Back To Term List"
+        android:id="@+id/backtoterm"
+        app:showAsAction="never" />
 
 </menu>

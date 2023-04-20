@@ -29,6 +29,7 @@ public class Repository {
     private List<Term> mAllTerms;
     private List<Mentor> mAllMentors;
     private List<Assesment> mAllAssesments;
+    private int maxCourseID;
 
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService dbExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
@@ -83,6 +84,12 @@ public class Repository {
             mAllCourses = mCourseDAO.getAllTermCourses(termID);
         });
         return mAllCourses;
+    }
+    public int getMaxCourseId() throws InterruptedException {
+        dbExecutor.execute(() -> {
+            maxCourseID = mCourseDAO.getMaxCourseId();
+        });
+        return maxCourseID;
     }
 
     public void insert(Course course) throws InterruptedException {

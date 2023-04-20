@@ -37,7 +37,8 @@ public class ModifyCourses extends AppCompatActivity {
     private String courseEndDate;
     private TextView mentorEmail;
     private TextView mentorPhone;
-    private FloatingActionButton addMentorFb;
+    private int mentorId;
+    private FloatingActionButton addAssesmentFb;
     private TextView mentorName;
     private Spinner courseStatusSpinner;
     private Spinner termSpinner;
@@ -46,6 +47,7 @@ public class ModifyCourses extends AppCompatActivity {
     private List<Mentor> allMentors;
     private Button saveCourseButton;
     private List<Term> allTerms = new ArrayList<>();
+    private int maxCourseID;
     private Button addMentor;
 
 
@@ -65,7 +67,7 @@ public class ModifyCourses extends AppCompatActivity {
         mentorName = findViewById(R.id.mentorname);
         mentorEmail = findViewById(R.id.curinstructoremail);
         mentorPhone = findViewById(R.id.curinstructorphone);
-        addMentorFb = findViewById(R.id.editmentorfb);
+        addAssesmentFb = findViewById(R.id.addassesmentfb);
         termSpinner = findViewById(R.id.termspinner);
         addMentor = findViewById(R.id.addmentorbutton);
 
@@ -76,6 +78,13 @@ public class ModifyCourses extends AppCompatActivity {
         courseStartDate = getIntent().getStringExtra("startDate");
         courseEndDate = getIntent().getStringExtra("endDate");
 
+        try {
+            repository = new Repository(getApplication());
+            maxCourseID = repository.getMaxCourseId();
+            Toast.makeText(this, "Max Course ID: " + maxCourseID, Toast.LENGTH_LONG).show();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
         //Populate Course Status Spinner
@@ -170,6 +179,7 @@ public class ModifyCourses extends AppCompatActivity {
                             Toast.makeText(ModifyCourses.this, "Course has been Added, Term Name: " + t.getTermName(), Toast.LENGTH_LONG).show();
                             if (termName.equals(curTerm)) {
                                 termID = t.getTermID();
+                                maxCourseID = repository.getMaxCourseId() + 1;
                                 courseStatus = courseStatusSpinner.getSelectedItem().toString();
                                 mCourse = new Course(editCourseName.getText().toString(), editCourseStart.getText().toString(), editCourseEnd.getText().toString(), courseStatus, termID);
                                 Toast.makeText(ModifyCourses.this, "Course has been Added, Term ID: " + termID, Toast.LENGTH_LONG).show();
@@ -225,6 +235,17 @@ public class ModifyCourses extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ModifyCourses.this, ViewMentors.class);
+                intent.putExtra("courseID", courseId);
+                intent.putExtra("mentorID", mentorId);
+                startActivity(intent);
+            }
+        });
+
+        addAssesmentFb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ModifyCourses.this, AddAssesment.class);
+                intent.putExtra("Course_Id", courseId);
                 startActivity(intent);
             }
         });
@@ -235,12 +256,17 @@ public class ModifyCourses extends AppCompatActivity {
 
     //Method to populate mentor email and phone fields with currently selected mentor
     public void populateMentor(int courseId) {
-        Toast.makeText(ModifyCourses.this, "Populate Mentor Called", Toast.LENGTH_LONG).show();
         for (Mentor m : allMentors) {
             if (courseId == m.getCourseID_FK()) {
                 mentorName.setText(m.getMentorName());
                 mentorEmail.setText(m.getEmail());
                 mentorPhone.setText(m.getPhone());
+                mentorId = m.getMentorID();
+                break;
+            }else {
+                mentorName.setText("Add Mentor");
+                mentorEmail.setText("Add Mentor Email");
+                mentorPhone.setText("Add Mentor Phone");
             }
         }
     }
@@ -267,6 +293,8 @@ public class ModifyCourses extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         if (courseId > 0) {
             getMenuInflater().inflate(R.menu.course_menu, menu);
+        }else {
+            getMenuInflater().inflate(R.menu.back_menu, menu);
         }
         return true;
     }
@@ -288,7 +316,17 @@ public class ModifyCourses extends AppCompatActivity {
                     return true;
                 }
             case R.id.setnotifcation:
+                return true;
 
+            case R.id.backtoterm:
+                Intent intent = new Intent(ModifyCourses.this, ViewTerm.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.back:
+                intent = new Intent(ModifyCourses.this, ViewTerm.class);
+                startActivity(intent);
+                return true;
         }
         return true;
     }
