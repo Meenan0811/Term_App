@@ -43,6 +43,19 @@ public class ViewCourses extends AppCompatActivity {
                 try {
                     repository.insert(mCourse);
                     Toast.makeText(ViewCourses.this, "New Course Added", Toast.LENGTH_LONG).show();
+
+                    RecyclerView recyclerView = findViewById(R.id.courserecyclerview);
+                    final CourseAdapter courseAdapter = new CourseAdapter(ViewCourses.this);
+                    recyclerView.setAdapter(courseAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(ViewCourses.this));
+
+                    Repository repository = new Repository(getApplication());
+                    List<Course> allCourses = new ArrayList<>();
+                    allCourses = repository.getAllCourses();
+                    courseAdapter.setCourses(allCourses);
+                    courseAdapter.notifyDataSetChanged();
+
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     Toast.makeText(ViewCourses.this, "Unable to add Course, please try again", Toast.LENGTH_LONG).show();
@@ -62,7 +75,42 @@ public class ViewCourses extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        courseAdapter.setTerms(allCourses);
+        courseAdapter.setCourses(allCourses);
+    }
+
+
+
+    protected void onResume() {
+        super.onResume();
+        List<Course> allCourses = new ArrayList<>();
+        repository= new Repository(getApplication());
+        try {
+            allCourses = repository.getAllCourses();
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        RecyclerView recyclerView = findViewById(R.id.courserecyclerview);
+        final CourseAdapter courseAdapter = new CourseAdapter(this);
+        recyclerView.setAdapter(courseAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        courseAdapter.setCourses(allCourses);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.back_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.back:
+                intent = new Intent(ViewCourses.this, TermDetails.class);
+                intent.putExtra("termID", termId);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

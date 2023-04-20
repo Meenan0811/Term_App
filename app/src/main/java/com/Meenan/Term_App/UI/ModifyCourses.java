@@ -78,14 +78,6 @@ public class ModifyCourses extends AppCompatActivity {
         courseStartDate = getIntent().getStringExtra("startDate");
         courseEndDate = getIntent().getStringExtra("endDate");
 
-        try {
-            repository = new Repository(getApplication());
-            maxCourseID = repository.getMaxCourseId();
-            Toast.makeText(this, "Max Course ID: " + maxCourseID, Toast.LENGTH_LONG).show();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
 
         //Populate Course Status Spinner
         ArrayAdapter<CharSequence> ad = ArrayAdapter.createFromResource(this, R.array.course_status, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
@@ -179,7 +171,6 @@ public class ModifyCourses extends AppCompatActivity {
                             Toast.makeText(ModifyCourses.this, "Course has been Added, Term Name: " + t.getTermName(), Toast.LENGTH_LONG).show();
                             if (termName.equals(curTerm)) {
                                 termID = t.getTermID();
-                                maxCourseID = repository.getMaxCourseId() + 1;
                                 courseStatus = courseStatusSpinner.getSelectedItem().toString();
                                 mCourse = new Course(editCourseName.getText().toString(), editCourseStart.getText().toString(), editCourseEnd.getText().toString(), courseStatus, termID);
                                 Toast.makeText(ModifyCourses.this, "Course has been Added, Term ID: " + termID, Toast.LENGTH_LONG).show();

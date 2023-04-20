@@ -82,7 +82,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         }
     }
 
-    public void setTerms(List<Course> course) {
+    public void setCourses(List<Course> course) {
         mCourses = course;
         notifyDataSetChanged();
     }

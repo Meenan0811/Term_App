@@ -78,10 +78,10 @@ public class TermDetails extends AppCompatActivity {
                 e.printStackTrace();
             }
             if (allTermCourses.size() != 0) {
-                courseAdapter.setTerms(allTermCourses);
+                courseAdapter.setCourses(allTermCourses);
             } else {
                 allTermCourses = null;
-                courseAdapter.setTerms(allTermCourses);
+                courseAdapter.setCourses(allTermCourses);
             }
         }
 

@@ -85,12 +85,6 @@ public class Repository {
         });
         return mAllCourses;
     }
-    public int getMaxCourseId() throws InterruptedException {
-        dbExecutor.execute(() -> {
-            maxCourseID = mCourseDAO.getMaxCourseId();
-        });
-        return maxCourseID;
-    }
 
     public void insert(Course course) throws InterruptedException {
         dbExecutor.execute(() -> {
