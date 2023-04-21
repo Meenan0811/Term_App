@@ -209,9 +209,10 @@ public class TermDetails extends AppCompatActivity {
                 List<Course> allTermCourses = new ArrayList<>();
                 repository = new Repository(getApplication());
                 Term curTerm = new Term();
-                curTerm = repository.getTermById(termId);
                 Toast.makeText(TermDetails.this, "Term ID: " + termId + " term Name: " + curTerm, Toast.LENGTH_LONG).show();
-                /*try {
+                try {
+                    for (Term t : repository.getAllTerms())
+                        if (t.getTermID() == termId) curTerm = t;
                     for (Course c : repository.getAllCourses())
                         if (c.getTermID_FK() == termId) allTermCourses.add(c);
                 } catch (InterruptedException e) {
@@ -225,14 +226,18 @@ public class TermDetails extends AppCompatActivity {
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
-                        curTerm = repository.getTermById(termId);
-                        try {
-                            repository.delete(curTerm);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
+
                     }
-                }*/
+                }
+                try {
+                    repository.delete(curTerm);
+                    intent = new Intent(TermDetails.this, ViewTerm.class);
+                    startActivity(intent);
+                    Toast.makeText(TermDetails.this, "Term and all associated courses have been deleted", Toast.LENGTH_LONG).show();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -50,13 +50,6 @@ public class Repository {
         return mAllTerms;
     }
 
-    public Term getTermById(int termId) {
-        dbExecutor.execute(() -> {
-            mTerm = mTermDAO.getTermById(termId);
-        });
-        return mTerm;
-    }
-
     public void insert(Term term) throws InterruptedException {
         dbExecutor.execute(() -> {
             mTermDAO.insert(term);
