@@ -25,6 +25,9 @@ public class ViewCourses extends AppCompatActivity {
     private Intent intent;
     private Course mCourse;
     private int termId;
+    private String termName;
+    private String termStart;
+    private String termEnd;
     private Repository repository;
 
     @Override
@@ -32,7 +35,10 @@ public class ViewCourses extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_courses);
 
-        termId = getIntent().getIntExtra("termId", -1);
+        termId = getIntent().getIntExtra("termID", -1);
+        termName = getIntent().getStringExtra("termName");
+        termStart = getIntent().getStringExtra("termStart");
+        termEnd = getIntent().getStringExtra("termEnd");
 
         addcourse = findViewById(R.id.addnewcoursefb);
         addcourse.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +88,7 @@ public class ViewCourses extends AppCompatActivity {
 
     protected void onResume() {
         super.onResume();
-        List<Course> allCourses = new ArrayList<>();
+        List<Course> allCourses;
         repository= new Repository(getApplication());
         try {
             allCourses = repository.getAllCourses();
@@ -105,8 +111,15 @@ public class ViewCourses extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.back:
+                termId = getIntent().getIntExtra("termID", -1);
+                termName = getIntent().getStringExtra("termName");
+                termStart = getIntent().getStringExtra("termStart");
+                termEnd = getIntent().getStringExtra("termEnd");
                 intent = new Intent(ViewCourses.this, TermDetails.class);
                 intent.putExtra("termID", termId);
+                intent.putExtra("termName", termName);
+                intent.putExtra("termStart", termStart);
+                intent.putExtra("termEnd", termEnd);
                 startActivity(intent);
                 return true;
         }
