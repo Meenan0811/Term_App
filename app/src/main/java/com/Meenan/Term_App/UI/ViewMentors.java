@@ -43,8 +43,8 @@ public class ViewMentors extends AppCompatActivity {
         saveMentor = findViewById(R.id.savementorbutton);
 
         //Assign passed information
-        mentorId = getIntent().getIntExtra("mentorId", -1);
-        courseId = getIntent().getIntExtra("courseId", -1);
+        mentorId = getIntent().getIntExtra("mentorID", -1);
+        courseId = getIntent().getIntExtra("courseID", -1);
 
         repository = new Repository(getApplication());
 
@@ -83,7 +83,7 @@ public class ViewMentors extends AppCompatActivity {
                         Mentor mMentor = new Mentor(mentorId, mName, mPhone, mEmail, courseId);
                         try {
                             repository.update(mMentor);
-                            Toast.makeText(ViewMentors.this, "Mentor, " + mName + " updated", Toast.LENGTH_LONG).show();;
+                            Toast.makeText(ViewMentors.this, "Mentor, " + mName + " updated " + mentorId, Toast.LENGTH_LONG).show();;
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }

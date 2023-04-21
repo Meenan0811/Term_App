@@ -273,6 +273,7 @@ public class ModifyCourses extends AppCompatActivity {
                 mentorName.setText("Add Mentor");
                 mentorEmail.setText("Add Mentor Email");
                 mentorPhone.setText("Add Mentor Phone");
+                mentorId = -1;
             }
         }
     }
@@ -310,6 +311,7 @@ public class ModifyCourses extends AppCompatActivity {
                 if (courseId > 0) {
                     try {
                         List<Course> courseList = repository.getAllCourses();
+                        List<Mentor> mentorList = repository.getAllMentors();
                         termId = getIntent().getIntExtra("termID", -1);
                         termName = getIntent().getStringExtra("termName");
                         termStart = getIntent().getStringExtra("termStart");
@@ -317,6 +319,7 @@ public class ModifyCourses extends AppCompatActivity {
                         for (Course c : courseList) {
                             if (c.getCourseID() == courseId) {
                                 repository.delete(c);
+                                for (Mentor m : mentorList) if (m.getCourseID_FK() == courseId) repository.delete(m);
                                 Toast.makeText(ModifyCourses.this, "Course " + c.getCourseName() + " deleted", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(ModifyCourses.this, TermDetails.class);
                                 intent.putExtra("termID", termId);
@@ -326,6 +329,7 @@ public class ModifyCourses extends AppCompatActivity {
                                 startActivity(intent);
                             }
                         }
+
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

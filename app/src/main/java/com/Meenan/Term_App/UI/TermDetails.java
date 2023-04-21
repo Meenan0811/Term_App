@@ -45,6 +45,7 @@ public class TermDetails extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener endDateCale;
     final Calendar calStart = Calendar.getInstance();
     final Calendar calEnd = Calendar.getInstance();
+    private Course mCourse;
 
 
     @Override
@@ -89,71 +90,64 @@ public class TermDetails extends AppCompatActivity {
         }
 
 
+        editTerm = findViewById(R.id.edittermbutton);
+        editTerm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TermDetails.this, ViewTerm.class);
+                intent.putExtra("termId", termId);
+                intent.putExtra("termName", mTermName);
+                intent.putExtra("termStart", startDate);
+                intent.putExtra("termEnd", endDate);
+                startActivity(intent);
+            }
+        });
 
-            editTerm = findViewById(R.id.edittermbutton);
-            editTerm.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(TermDetails.this, ViewTerm.class);
-                    intent.putExtra("termId", termId);
-                    intent.putExtra("termName", mTermName);
-                    intent.putExtra("termStart", startDate);
-                    intent.putExtra("termEnd", endDate);
-                    startActivity(intent);
-                }
-            });
+        addCourse = findViewById(R.id.addcoursefb);
+        addCourse.setOnClickListener(new View.OnClickListener() {
 
-            addCourse = findViewById(R.id.addcoursefb);
-            addCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TermDetails.this, ViewCourses.class);
+                intent.putExtra("termID", termId);
+                intent.putExtra("termName", mTermName);
+                intent.putExtra("termStart", startDate);
+                intent.putExtra("termEnd", endDate);
+                //startActivity(intent);
+                repository = new Repository(getApplication());
+                mCourse = new Course("New Course", "01/01/1973", "01/30/1973", "In Progress", termId);
+                try {
+                    repository.insert(mCourse);
+                    Toast.makeText(TermDetails.this, "New Course Added", Toast.LENGTH_LONG).show();
 
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(TermDetails.this, ViewCourses.class);
-                    intent.putExtra("termID", termId);
-                    intent.putExtra("termName", mTermName);
-                    intent.putExtra("termStart", startDate);
-                    intent.putExtra("termEnd", endDate);
-                    startActivity(intent);
-                }
-            });
+                    RecyclerView cRecyclerView = findViewById(R.id.assignedcourserecyclerview);
+                    final CourseAdapter courseAdapter = new CourseAdapter(TermDetails.this);
+                    cRecyclerView.setAdapter(courseAdapter);
+                    cRecyclerView.setLayoutManager(new LinearLayoutManager(TermDetails.this));
 
+                    List<Course> allTermCourses = new ArrayList<>();
 
-            /*String calFormat = "MM/dd/yyyy";
-            SimpleDateFormat sdf = new SimpleDateFormat(calFormat, Locale.US);
-            editStart.setText(sdf.format(new Date()));
-            editStart.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String initialDate = editStart.getText().toString();
-                    if (initialDate.equals("")) initialDate = "01/01/1973";
+                    for (Course c : repository.getAllCourses())
+                        if (c.getTermID_FK() == termId) allTermCourses.add(c);
 
-                    try {
-                        calStart.setTime(sdf.parse(initialDate));
-                    } catch (ParseException e) {
-                        throw new RuntimeException(e);
+                    if (allTermCourses.size() != 0) {
+                        courseAdapter.setCourses(allTermCourses);
+                        courseAdapter.notifyDataSetChanged();
+                    } else {
+                        allTermCourses = null;
+                        courseAdapter.setCourses(allTermCourses);
+                        courseAdapter.notifyDataSetChanged();
                     }
-                    new DatePickerDialog(ModifyTerm.this, startDateCal, calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH), calStart.get(Calendar.DAY_OF_MONTH)).show();
+
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Toast.makeText(TermDetails.this, "Unable to add Course, please try again", Toast.LENGTH_LONG).show();
                 }
-            });
-
-            startDateCal = new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                    calStart.set(Calendar.YEAR, year);
-                    calStart.set(Calendar.MONTH, month);
-                    calStart.set(Calendar.DAY_OF_MONTH, day);
-                    updateLabelStart();
-                }
-            };*/
-
-
+            }
+        });
     }
 
-    /*private void updateLabelStart() {
-        String myFormat = "MM/dd/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat,Locale.US);
-        //editStart.setText(sdf.format(calStart.getTime()));
-    }*/
 
     protected void onResume() {
         super.onResume();

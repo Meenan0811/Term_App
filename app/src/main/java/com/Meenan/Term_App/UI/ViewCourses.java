@@ -40,7 +40,7 @@ public class ViewCourses extends AppCompatActivity {
         termStart = getIntent().getStringExtra("termStart");
         termEnd = getIntent().getStringExtra("termEnd");
 
-        addcourse = findViewById(R.id.addnewcoursefb);
+        /*addcourse = findViewById(R.id.addnewcoursefb);
         addcourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,7 +67,7 @@ public class ViewCourses extends AppCompatActivity {
                     Toast.makeText(ViewCourses.this, "Unable to add Course, please try again", Toast.LENGTH_LONG).show();
                 }
             }
-        });
+        }); */
 
         RecyclerView recyclerView = findViewById(R.id.courserecyclerview);
         final CourseAdapter courseAdapter = new CourseAdapter(this);
