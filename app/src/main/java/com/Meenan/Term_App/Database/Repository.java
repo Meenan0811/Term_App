@@ -29,7 +29,7 @@ public class Repository {
     private List<Term> mAllTerms;
     private List<Mentor> mAllMentors;
     private List<Assesment> mAllAssesments;
-    private int maxCourseID;
+    private Term mTerm;
 
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService dbExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
@@ -48,6 +48,13 @@ public class Repository {
         });
         Thread.sleep(1000);
         return mAllTerms;
+    }
+
+    public Term getTermById(int termId) {
+        dbExecutor.execute(() -> {
+            mTerm = mTermDAO.getTermById(termId);
+        });
+        return mTerm;
     }
 
     public void insert(Term term) throws InterruptedException {

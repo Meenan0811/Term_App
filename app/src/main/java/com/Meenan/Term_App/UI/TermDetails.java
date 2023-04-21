@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -189,5 +191,49 @@ public class TermDetails extends AppCompatActivity {
                 courseAdapter.setCourses(allTermCourses);
             }
         }
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.term_details_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.termback:
+                Intent intent = new Intent(TermDetails.this, ViewTerm.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.deleteterm:
+                List<Course> allTermCourses = new ArrayList<>();
+                repository = new Repository(getApplication());
+                Term curTerm = new Term();
+                curTerm = repository.getTermById(termId);
+                Toast.makeText(TermDetails.this, "Term ID: " + termId + " term Name: " + curTerm, Toast.LENGTH_LONG).show();
+                /*try {
+                    for (Course c : repository.getAllCourses())
+                        if (c.getTermID_FK() == termId) allTermCourses.add(c);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (allTermCourses.size() != 0) {
+                    Toast.makeText(TermDetails.this, "This will Delete all Courses associated with this term", Toast.LENGTH_LONG).show();
+                    for (Course c : allTermCourses) {
+                        try {
+                            repository.delete(c);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        curTerm = repository.getTermById(termId);
+                        try {
+                            repository.delete(curTerm);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }*/
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
