@@ -251,7 +251,7 @@ public class ModifyCourses extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ModifyCourses.this, AddAssesment.class);
-                intent.putExtra("Course_Id", courseId);
+                intent.putExtra("courseID", courseId);
                 startActivity(intent);
             }
         });

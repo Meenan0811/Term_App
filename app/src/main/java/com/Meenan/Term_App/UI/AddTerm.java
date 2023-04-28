@@ -20,6 +20,7 @@ public class AddTerm extends AppCompatActivity {
     private String tName;
     private String tStart;
     private String tEnd;
+    private int tId;
     private Term mTerm;
     private Button saveTermButton;
     private Repository repository;
@@ -31,10 +32,24 @@ public class AddTerm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_term);
 
+        //Retrieve passed information
+        intent = new Intent();
+        tName = getIntent().getStringExtra("termName");
+        tStart = getIntent().getStringExtra("termStart");
+        tEnd = getIntent().getStringExtra("termEnd");
+        tId = getIntent().getIntExtra("termId", -1);
+
+
+        //Assign variables to activity Id's
         termName = findViewById(R.id.termNameEdit);
         termStart = findViewById(R.id.termStartEdit);
         termEnd = findViewById(R.id.termEndEdit);
         repository = new Repository(getApplication());
+
+        //Set EditText fields with pass Term data
+        termName.setText(tName);
+        termStart.setText(tStart);
+        termEnd.setText(tEnd);
 
         saveTermButton = findViewById(R.id.savetermbutton);
         saveTermButton.setOnClickListener(new View.OnClickListener() {
@@ -45,9 +60,9 @@ public class AddTerm extends AppCompatActivity {
                 //Toast.makeText(AddTerm.this, "NAme: " + name + " Start: " + start, Toast.LENGTH_LONG).show();
                 String end = termEnd.getText().toString();
                 if (start.length() == 10 && end.length() == 10 && !name.isEmpty()) {
-                    mTerm = new Term(termStart.getText().toString(), termEnd.getText().toString(), termName.getText().toString());
+                    mTerm = new Term(tId, termStart.getText().toString(), termEnd.getText().toString(), termName.getText().toString());
                     try {
-                        repository.insert(mTerm);
+                        repository.update(mTerm);
                         Toast.makeText(AddTerm.this, "Term Saved", Toast.LENGTH_LONG).show();
                     } catch (InterruptedException e) {
                         e.printStackTrace();

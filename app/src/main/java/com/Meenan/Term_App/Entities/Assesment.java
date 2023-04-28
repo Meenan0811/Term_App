@@ -7,13 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "Assesments")
 public class Assesment {
 
-    public int getAssesmentID() {
-        return assesmentID;
-    }
 
-    public void setAssesmentID(int assesmentID) {
-        this.assesmentID = assesmentID;
-    }
 
     @PrimaryKey(autoGenerate = true)
     private int assesmentID;
@@ -77,5 +71,12 @@ public class Assesment {
 
     public void setCourseID_FK(int courseID_FK) {
         this.courseID_FK = courseID_FK;
+    }
+    public int getAssesmentID() {
+        return assesmentID;
+    }
+
+    public void setAssesmentID(int assesmentID) {
+        this.assesmentID = assesmentID;
     }
 }

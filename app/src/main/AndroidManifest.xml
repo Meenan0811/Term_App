@@ -12,7 +12,7 @@
         android:theme="@style/Theme.Term_App"
         tools:targetApi="31">
         <activity
-            android:name=".AddAssesment"
+            android:name=".UI.AddAssesment"
             android:exported="false" />
         <activity
             android:name=".UI.AddTerm"

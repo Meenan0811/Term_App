@@ -94,7 +94,7 @@ public class TermDetails extends AppCompatActivity {
         editTerm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TermDetails.this, ViewTerm.class);
+                Intent intent = new Intent(TermDetails.this, AddTerm.class);
                 intent.putExtra("termId", termId);
                 intent.putExtra("termName", mTermName);
                 intent.putExtra("termStart", startDate);
