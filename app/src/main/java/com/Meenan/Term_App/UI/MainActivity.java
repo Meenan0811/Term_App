@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public static int numAlert;
+
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
 

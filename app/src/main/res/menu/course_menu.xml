@@ -12,7 +12,7 @@
         android:id="@+id/deletecourse"
         app:showAsAction="never" />
     <item
-        android:title="Back To Term List"
+        android:title="Back"
         android:id="@+id/backtoterm"
         app:showAsAction="never" />
 
