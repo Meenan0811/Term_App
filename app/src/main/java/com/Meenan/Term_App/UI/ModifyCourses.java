@@ -16,11 +16,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.Meenan.Term_App.Database.Repository;
+import com.Meenan.Term_App.Entities.Assesment;
 import com.Meenan.Term_App.Entities.Course;
 import com.Meenan.Term_App.Entities.Mentor;
 import com.Meenan.Term_App.Entities.Term;
 import com.Meenan.Term_App.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +56,10 @@ public class ModifyCourses extends AppCompatActivity {
     private String termName;
     private String termStart;
     private String termEnd;
+    private String assesment;
+    private TextView assTextView;
+    private List<Assesment> allAssesmentList = new ArrayList<>();
+
 
 
 
@@ -74,6 +81,7 @@ public class ModifyCourses extends AppCompatActivity {
         addAssesmentFb = findViewById(R.id.addassesmentfb);
         termSpinner = findViewById(R.id.termspinner);
         addMentor = findViewById(R.id.addmentorbutton);
+        assTextView = findViewById(R.id.assignedassesment);
 
         //Retrieve passed course information
         courseId = getIntent().getIntExtra("courseID", -1);
@@ -123,7 +131,7 @@ public class ModifyCourses extends AppCompatActivity {
 
 
 
-        //Populate Term Spinner
+        //Populate Term Spinner FIXME: Delete if not necessary
         repository = new Repository(getApplication());
         List<String> termList;
         try {
@@ -148,6 +156,13 @@ public class ModifyCourses extends AppCompatActivity {
             throw new RuntimeException(e);
         }
 
+        //List of All Assesments
+        try {
+            allAssesmentList = repository.getAllAssesments();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
 
         //Populate passed Course information if available
         if (courseId != -1) {
@@ -157,7 +172,10 @@ public class ModifyCourses extends AppCompatActivity {
             int curposition = ad.getPosition(courseStatus);
             courseStatusSpinner.setSelection(curposition);
             populateMentor(courseId);
+            addAssesment(courseId);
+
         }
+
 
         saveCourseButton = findViewById(R.id.addcoursebutton);
         saveCourseButton.setOnClickListener(new View.OnClickListener() {
@@ -278,24 +296,19 @@ public class ModifyCourses extends AppCompatActivity {
         }
     }
 
-    // FIXME: delete Me
-    /*public void addCourseMentor(String mentorName, int courseId) throws InterruptedException {
-        for (Mentor m : allMentors) {
-            if (mentorName.equals(m.getMentorName())) {
-                if (courseId == m.getCourseID_FK() || courseId == -1) {
-                    Mentor mentor = new Mentor(m.getMentorID(), mentorName, mentorEmail.getText().toString(), mentorPhone.getText().toString(), courseId);
-                    repository.update(mentor);
-                } else {
-                    repository.delete(m);
-                    Toast.makeText(ModifyCourses.this, "Deleted existing mentor", Toast.LENGTH_LONG).show();
-
-                    Mentor mentor = new Mentor(mentorName, mentorEmail.getText().toString(), mentorPhone.getText().toString(), courseId);
-                    repository.insert(mentor);
-
-                }
+    //Searches for any Assessments matching course ID and populates assessment label
+    public void addAssesment(int courseId) {
+        int i =0;
+        for (Assesment a : allAssesmentList) {
+            ++i;
+            Toast.makeText(ModifyCourses.this, "Loop Name: " + a.getName() + "Loop #: " + i, Toast.LENGTH_LONG).show();
+            if (a.getCourseID_FK() == courseId) {
+                assTextView.setText(a.getName());
+                Toast.makeText(ModifyCourses.this, "Assessment Name: " + a.getName(), Toast.LENGTH_LONG).show();
+                break;
             }
         }
-    } */
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         if (courseId > 0) {

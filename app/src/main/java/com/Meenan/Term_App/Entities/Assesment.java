@@ -6,9 +6,6 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "Assesments")
 public class Assesment {
-
-
-
     @PrimaryKey(autoGenerate = true)
     private int assesmentID;
     private String name;
@@ -35,18 +32,12 @@ public class Assesment {
 
     public Assesment() {}
 
-    public int getAssesmentId() {
-        return assesmentID;
-    }
-
-    public void setAssesmentId(int id) { assesmentID = id; }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        name = name;
+        this.name = name;
     }
 
     public String getEndDate() {
