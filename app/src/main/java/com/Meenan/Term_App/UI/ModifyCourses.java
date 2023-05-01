@@ -99,39 +99,6 @@ public class ModifyCourses extends AppCompatActivity {
         courseStatusSpinner.setAdapter(ad);
 
 
-        //Populate Mentor Spinner - FIXME: Delete Me
-        //repository = new Repository(getApplication());
-        //List<String> mentorNamesList;
-       /* try {
-
-            allMentors = repository.getAllMentors();
-            List<String> mentorNamesList = new ArrayList<>();
-            for (Mentor m : allMentors) {
-                String curMentor = m.getMentorName();
-                mentorNamesList.add(curMentor);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        ArrayAdapter<CharSequence> mentorAd = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        mentorAd.addAll(mentorNamesList);
-        mentorNamesSpinner.setAdapter(mentorAd);
-        mentorNamesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String curMentor = mentorNamesSpinner.getSelectedItem().toString();
-                populateMentor(curMentor);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-
-
-        });*/
-
-
         //Populate Term Spinner FIXME: Delete if not necessary
         repository = new Repository(getApplication());
         List<String> termList;

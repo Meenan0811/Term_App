@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,13 +23,14 @@ public class AddAssesment extends AppCompatActivity {
 
     private Intent intent;
     private EditText editTitle;
-    private Switch type;
+    private Spinner assTypeSpinner;
     private EditText startDate;
     private EditText editDate;
     private TextView assLabel;
     private int courseId;
     private int assId;
     private String assTitle;
+    private String assType;
     private String assStart;
     private String assEnd;
     private Button saveButton;
@@ -44,6 +47,8 @@ public class AddAssesment extends AppCompatActivity {
         editDate = findViewById(R.id.editassesmentend);
         assLabel = findViewById(R.id.assesmentlabel);
         saveButton = findViewById(R.id.saveassesmentbutton);
+        startDate = findViewById(R.id.assstartedit);
+        assTypeSpinner = findViewById(R.id.asstypespinner);
 
         //Assign data passed from previoous screen to local variables
         courseId = getIntent().getIntExtra("courseID", -1);
@@ -51,9 +56,15 @@ public class AddAssesment extends AppCompatActivity {
         assEnd = getIntent().getStringExtra("assEnd");
         assId = getIntent().getIntExtra("assId", -1);
 
+        //Populate Assessment type spinner
+        ArrayAdapter<CharSequence> ad = ArrayAdapter.createFromResource(this, R.array.ass_spinner, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        ad.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        assTypeSpinner.setAdapter(ad);
+
         if (assId != -1) {
             editTitle.setText(assTitle);
             editDate.setText(assEnd);
+            startDate.setText(assStart);
             assLabel.setText("Edit Assessment");
         } else { assLabel.setText("Add Assessment"); }
 
@@ -66,8 +77,10 @@ public class AddAssesment extends AppCompatActivity {
                 Repository repository = new Repository(getApplication());
                 assTitle = editTitle.getText().toString();
                 assEnd = editDate.getText().toString();
+                assStart = startDate.getText().toString();
+                assType = assTypeSpinner.getSelectedItem().toString();
                 if (assId != -1) {
-                    mAss = new Assesment(assId, assTitle, assStart,  assEnd,"Objective", courseId);
+                    mAss = new Assesment(assId, assTitle, assStart,  assEnd,assType, courseId);
                     try {
                         repository.update(mAss);
                         Toast.makeText(AddAssesment.this, "Assessment updated successfully", Toast.LENGTH_LONG).show();
@@ -76,7 +89,7 @@ public class AddAssesment extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
                 } else {
-                    mAss = new Assesment(assTitle, assStart, assEnd, "Performance", courseId);
+                    mAss = new Assesment(assTitle, assStart, assEnd, assType, courseId);
                     try {
                         repository.insert(mAss);
                         Toast.makeText(AddAssesment.this, "Assessment added successfully", Toast.LENGTH_LONG).show();
