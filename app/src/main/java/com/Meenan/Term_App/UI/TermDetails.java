@@ -205,7 +205,8 @@ public class TermDetails extends AppCompatActivity {
                 List<Course> allTermCourses = new ArrayList<>();
                 repository = new Repository(getApplication());
                 AtomicReference<Term> curTerm = new AtomicReference<>(new Term());
-                Toast.makeText(TermDetails.this, "Term ID: " + termId + " term Name: " + curTerm, Toast.LENGTH_LONG).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(TermDetails.this);
+                AlertDialog alertDialog = null;
                 try {
                     for (Term t : repository.getAllTerms())
                         if (t.getTermID() == termId) curTerm.set(t);
@@ -215,46 +216,44 @@ public class TermDetails extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 if (allTermCourses.size() != 0) {
-                    Toast.makeText(TermDetails.this, "This will Delete all Courses associated with this term", Toast.LENGTH_LONG).show();
-                    for (Course c : allTermCourses) {
+                    builder.setMessage("You must delete all associated courses before deleting a term");
+                    builder.setTitle("Warning");
+                    alertDialog = builder.create();
+                    alertDialog.show();
+
+                }else {
+                    builder.setMessage("Are you sure you want to delete this Term?");
+                    builder.setTitle("Warning");
+                    builder.setPositiveButton("Delete Term", (DialogInterface.OnClickListener) (dialog, which) -> {
                         try {
-                            repository.delete(c);
+                            repository.delete(curTerm.get());
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
-
-                    }
-                }
-                try {
-                    repository.delete(curTerm.get());
-                    intent = new Intent(TermDetails.this, ViewTerm.class);
-                    startActivity(intent);
-                    Toast.makeText(TermDetails.this, "Term and all associated courses have been deleted", Toast.LENGTH_LONG).show();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                        Intent intent1 = new Intent(TermDetails.this, ViewTerm.class);
+                        startActivity(intent1);
+                        Toast.makeText(TermDetails.this, "Term has been deleted", Toast.LENGTH_LONG).show();
+                    });
+                    builder.setNegativeButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {});
+                    alertDialog = builder.create();;
+                    alertDialog.show();
                 }
                 return true;
 
             case R.id.deleteallcourses:
                 allTermCourses = new ArrayList<>();
-                AlertDialog.Builder builder = new AlertDialog.Builder(TermDetails.this);
+                builder = new AlertDialog.Builder(TermDetails.this);
                 builder.setMessage("Are you Sure you Wish to Delete all Courses Associated with this Term?");
                 builder.setTitle("Warning");
                 builder.setPositiveButton("Delete All Courses", (DialogInterface.OnClickListener) (dialog, which) -> {
-
                     repository = new Repository(getApplication());
-                    Term t2 = new Term();
-                    Toast.makeText(TermDetails.this, "Term ID: " + termId + " term Name: ", Toast.LENGTH_LONG).show();
                     try {
-                        for (Term t : repository.getAllTerms())
-                            if (t.getTermID() == termId) t2 = t;
                         for (Course c : repository.getAllCourses())
                             if (c.getTermID_FK() == termId) allTermCourses.add(c);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     if (allTermCourses.size() != 0) {
-                        Toast.makeText(TermDetails.this, "This will Delete all Courses associated with this term", Toast.LENGTH_LONG).show();
                         for (Course c : allTermCourses) {
                             try {
                                 repository.delete(c);
@@ -275,13 +274,9 @@ public class TermDetails extends AppCompatActivity {
                         }
                     }
                 });
-                builder.setNegativeButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
-
-                });
-                AlertDialog alertDialog = builder.create();
+                builder.setNegativeButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {});
+                alertDialog = builder.create();
                 alertDialog.show();
-
-
         }
         return super.onOptionsItemSelected(item);
     }

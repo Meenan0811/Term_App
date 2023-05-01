@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,11 +21,14 @@ public class AddAssesment extends AppCompatActivity {
 
     private Intent intent;
     private EditText editTitle;
+    private Switch type;
+    private EditText startDate;
     private EditText editDate;
     private TextView assLabel;
     private int courseId;
     private int assId;
     private String assTitle;
+    private String assStart;
     private String assEnd;
     private Button saveButton;
     private Assesment mAss;
@@ -63,7 +67,7 @@ public class AddAssesment extends AppCompatActivity {
                 assTitle = editTitle.getText().toString();
                 assEnd = editDate.getText().toString();
                 if (assId != -1) {
-                    mAss = new Assesment(assId, assTitle, assEnd,"Objective", courseId);
+                    mAss = new Assesment(assId, assTitle, assStart,  assEnd,"Objective", courseId);
                     try {
                         repository.update(mAss);
                         Toast.makeText(AddAssesment.this, "Assessment updated successfully", Toast.LENGTH_LONG).show();
@@ -72,7 +76,7 @@ public class AddAssesment extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
                 } else {
-                    mAss = new Assesment(assTitle, assEnd, "Performance", courseId);
+                    mAss = new Assesment(assTitle, assStart, assEnd, "Performance", courseId);
                     try {
                         repository.insert(mAss);
                         Toast.makeText(AddAssesment.this, "Assessment added successfully", Toast.LENGTH_LONG).show();

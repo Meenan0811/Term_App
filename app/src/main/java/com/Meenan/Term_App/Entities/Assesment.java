@@ -9,22 +9,26 @@ public class Assesment {
     @PrimaryKey(autoGenerate = true)
     private int assesmentID;
     private String name;
+    private String startDate;
     private String endDate;
     private String type;
     private int courseID_FK;
 
 
 
-    public Assesment(String name, String endDate, String type, int courseID_FK) {
+    public Assesment(String name, String startDate, String endDate, String type, int courseID_FK) {
         this.name = name;
+        this.startDate = startDate;
         this.endDate = endDate;
         this.type = type;
         this.courseID_FK = courseID_FK;
     }
 
-    public Assesment(int assesmentId, String name, String endDate, String type, int courseID_FK) {
+
+    public Assesment(int assesmentId, String name, String startDate, String endDate, String type, int courseID_FK) {
         this.assesmentID = assesmentId;
         this.name = name;
+        this.startDate = startDate;
         this.endDate = endDate;
         this.type = type;
         this.courseID_FK = courseID_FK;
@@ -39,6 +43,9 @@ public class Assesment {
     public void setName(String name) {
         this.name = name;
     }
+    public String getStartDate() { return startDate; }
+
+    public void setStartDate(String startDate) { this.startDate = startDate; }
 
     public String getEndDate() {
         return endDate;
