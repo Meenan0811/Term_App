@@ -17,7 +17,11 @@ import android.widget.Toast;
 
 import com.Meenan.Term_App.Database.Repository;
 import com.Meenan.Term_App.Entities.Assesment;
+import com.Meenan.Term_App.Entities.Course;
 import com.Meenan.Term_App.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddAssesment extends AppCompatActivity {
 
@@ -35,6 +39,13 @@ public class AddAssesment extends AppCompatActivity {
     private String assEnd;
     private Button saveButton;
     private Assesment mAss;
+    private List<Course> allCourse = new ArrayList<>();
+    Repository repository;
+    private String courseName;
+    private String courseStart;
+    private String courseEnd;
+    private String courseStatus;
+    private int courseTerm;
 
 
     @Override
@@ -55,6 +66,8 @@ public class AddAssesment extends AppCompatActivity {
         assTitle = getIntent().getStringExtra("assTitle");
         assEnd = getIntent().getStringExtra("assEnd");
         assId = getIntent().getIntExtra("assId", -1);
+        assStart = getIntent().getStringExtra("assStart");
+        assType = getIntent().getStringExtra("assType");
 
         //Populate Assessment type spinner
         ArrayAdapter<CharSequence> ad = ArrayAdapter.createFromResource(this, R.array.ass_spinner, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
@@ -68,12 +81,34 @@ public class AddAssesment extends AppCompatActivity {
             assLabel.setText("Edit Assessment");
         } else { assLabel.setText("Add Assessment"); }
 
+        try {
+            repository = new Repository(getApplication());
+            allCourse = repository.getAllCourses();
+            for (Course c : allCourse) {
+                if (courseId == c.getCourseID()) {
+                    courseName = c.getCourseName();
+                    courseStart = c.getStartDate();
+                    courseEnd = c.getEndDate();
+                    courseStatus = c.getCourseStatus();
+                    courseTerm = c.getTermID_FK();
+                }
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 intent = new Intent(AddAssesment.this, ModifyCourses.class);
                 intent.putExtra("courseId", courseId);
+                intent.putExtra("courseName", courseName);
+                intent.putExtra("status", courseStatus);
+                intent.putExtra("startDate", courseStart);
+                intent.putExtra("endDate", courseEnd);
+                intent.putExtra("termID", courseTerm);
+
                 Repository repository = new Repository(getApplication());
                 assTitle = editTitle.getText().toString();
                 assEnd = editDate.getText().toString();
@@ -100,9 +135,6 @@ public class AddAssesment extends AppCompatActivity {
                 }
             }
         });
-
-        /*assTitle = editTitle.getText().toString();
-        assEnd = editTitle.getText().toString(); */
     }
 
 
@@ -115,6 +147,11 @@ public class AddAssesment extends AppCompatActivity {
         if (item.getItemId() == R.id.back) {
             intent = new Intent(AddAssesment.this, ModifyCourses.class);
             intent.putExtra("courseID", courseId);
+            intent.putExtra("courseName", courseName);
+            intent.putExtra("status", courseStatus);
+            intent.putExtra("startDate", courseStart);
+            intent.putExtra("endDate", courseEnd);
+            intent.putExtra("termID", courseTerm);
             startActivity(intent);
             return true;
         }

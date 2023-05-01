@@ -179,8 +179,8 @@
 
                 <Spinner
                     android:id="@+id/termspinner"
-                    android:layout_width="198dp"
-                    android:layout_height="23dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="100dp"
                     android:layout_marginTop="24dp"
                     app:layout_constraintStart_toEndOf="@+id/textView5"
@@ -199,14 +199,12 @@
                 android:layout_marginTop="20dp"
                 android:text="Assesment:" />
 
-            <TextView
+            <Spinner
                 android:id="@+id/assignedassesment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="70dp"
-                android:layout_marginTop="20dp"
-                android:text="No Assesment Assigned"
-                />
+                android:layout_marginTop="20dp" />
 
 
         </LinearLayout>

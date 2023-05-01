@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,8 +24,6 @@ import com.Meenan.Term_App.Entities.Mentor;
 import com.Meenan.Term_App.Entities.Term;
 import com.Meenan.Term_App.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -62,8 +59,8 @@ public class ModifyCourses extends AppCompatActivity {
     private String termName;
     private String termStart;
     private String termEnd;
-    private String assesment;
-    private TextView assTextView;
+    private Spinner courseAssSpinner;
+    private List<String> assString = new ArrayList<>();
     private List<Assesment> allAssesmentList = new ArrayList<>();
     private List<Course> allCourses = new ArrayList<>();
 
@@ -84,7 +81,7 @@ public class ModifyCourses extends AppCompatActivity {
         addAssesmentFb = findViewById(R.id.addassesmentfb);
         termSpinner = findViewById(R.id.termspinner);
         addMentor = findViewById(R.id.addmentorbutton);
-        assTextView = findViewById(R.id.assignedassesment);
+        courseAssSpinner = findViewById(R.id.assignedassesment);
 
         //Retrieve passed course information
         courseId = getIntent().getIntExtra("courseID", -1);
@@ -149,7 +146,6 @@ public class ModifyCourses extends AppCompatActivity {
             courseStatusSpinner.setSelection(curposition);
             populateMentor(courseId);
             addAssesment(courseId);
-
         }
 
 
@@ -207,13 +203,13 @@ public class ModifyCourses extends AppCompatActivity {
         addAssesmentFb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                List<Assesment> allAssess = new ArrayList<>();
+                repository = new Repository(getApplication());
                 Intent intent = new Intent(ModifyCourses.this, AddAssesment.class);
                 intent.putExtra("courseID", courseId);
                 startActivity(intent);
             }
         });
-
-
     }
 
 
@@ -237,16 +233,14 @@ public class ModifyCourses extends AppCompatActivity {
 
     //Searches for any Assessments matching course ID and populates assessment label
     public void addAssesment(int courseId) {
-        int i = 0;
         for (Assesment a : allAssesmentList) {
-            ++i;
-            Toast.makeText(ModifyCourses.this, "Loop Name: " + a.getName() + "Loop #: " + i, Toast.LENGTH_LONG).show();
             if (a.getCourseID_FK() == courseId) {
-                assTextView.setText(a.getName());
-                Toast.makeText(ModifyCourses.this, "Assessment Name: " + a.getName(), Toast.LENGTH_LONG).show();
-                break;
+                assString.add(a.getName());
             }
         }
+        ArrayAdapter<CharSequence> assAd = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        assAd.addAll(assString);
+        courseAssSpinner.setAdapter(assAd);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -361,5 +355,8 @@ public class ModifyCourses extends AppCompatActivity {
                 return true;
         }
 
+        protected void onResume() {
+            super.onResume();
     }
+}
 

@@ -64,7 +64,7 @@
         android:id="@+id/saveassesmentbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="612dp"
+        android:layout_marginTop="464dp"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.526"
@@ -85,7 +85,7 @@
         android:id="@+id/asstypespinner"
         android:layout_width="198dp"
         android:layout_height="23dp"
-        android:layout_marginStart="44dp"
+        android:layout_marginStart="48dp"
         android:layout_marginTop="44dp"
         app:layout_constraintStart_toEndOf="@+id/textView11"
         app:layout_constraintTop_toBottomOf="@+id/editassesmenttitle" />
@@ -104,10 +104,11 @@
         android:id="@+id/assstartedit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="52dp"
         android:ems="10"
         android:inputType="date"
         app:layout_constraintStart_toEndOf="@+id/textView13"
-        tools:layout_editor_absoluteY="293dp" />
+        app:layout_constraintTop_toBottomOf="@+id/asstypespinner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
