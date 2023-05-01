@@ -275,8 +275,12 @@ public class TermDetails extends AppCompatActivity {
                         }
                     }
                 });
+                builder.setNegativeButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
+
+                });
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
+
 
         }
         return super.onOptionsItemSelected(item);
