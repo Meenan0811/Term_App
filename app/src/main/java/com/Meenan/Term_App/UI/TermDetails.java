@@ -1,10 +1,14 @@
 package com.Meenan.Term_App.UI;
 
+import static android.app.PendingIntent.getActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,6 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class TermDetails extends AppCompatActivity {
 
@@ -199,11 +204,11 @@ public class TermDetails extends AppCompatActivity {
             case R.id.deleteterm:
                 List<Course> allTermCourses = new ArrayList<>();
                 repository = new Repository(getApplication());
-                Term curTerm = new Term();
+                AtomicReference<Term> curTerm = new AtomicReference<>(new Term());
                 Toast.makeText(TermDetails.this, "Term ID: " + termId + " term Name: " + curTerm, Toast.LENGTH_LONG).show();
                 try {
                     for (Term t : repository.getAllTerms())
-                        if (t.getTermID() == termId) curTerm = t;
+                        if (t.getTermID() == termId) curTerm.set(t);
                     for (Course c : repository.getAllCourses())
                         if (c.getTermID_FK() == termId) allTermCourses.add(c);
                 } catch (InterruptedException e) {
@@ -221,7 +226,7 @@ public class TermDetails extends AppCompatActivity {
                     }
                 }
                 try {
-                    repository.delete(curTerm);
+                    repository.delete(curTerm.get());
                     intent = new Intent(TermDetails.this, ViewTerm.class);
                     startActivity(intent);
                     Toast.makeText(TermDetails.this, "Term and all associated courses have been deleted", Toast.LENGTH_LONG).show();
@@ -229,6 +234,50 @@ public class TermDetails extends AppCompatActivity {
                     throw new RuntimeException(e);
                 }
                 return true;
+
+            case R.id.deleteallcourses:
+                allTermCourses = new ArrayList<>();
+                AlertDialog.Builder builder = new AlertDialog.Builder(TermDetails.this);
+                builder.setMessage("Are you Sure you Wish to Delete all Courses Associated with this Term?");
+                builder.setTitle("Warning");
+                builder.setPositiveButton("Delete All Courses", (DialogInterface.OnClickListener) (dialog, which) -> {
+
+                    repository = new Repository(getApplication());
+                    Term t2 = new Term();
+                    Toast.makeText(TermDetails.this, "Term ID: " + termId + " term Name: ", Toast.LENGTH_LONG).show();
+                    try {
+                        for (Term t : repository.getAllTerms())
+                            if (t.getTermID() == termId) t2 = t;
+                        for (Course c : repository.getAllCourses())
+                            if (c.getTermID_FK() == termId) allTermCourses.add(c);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if (allTermCourses.size() != 0) {
+                        Toast.makeText(TermDetails.this, "This will Delete all Courses associated with this term", Toast.LENGTH_LONG).show();
+                        for (Course c : allTermCourses) {
+                            try {
+                                repository.delete(c);
+
+                                RecyclerView cRecyclerView = findViewById(R.id.assignedcourserecyclerview);
+                                final CourseAdapter courseAdapter = new CourseAdapter(TermDetails.this);
+                                cRecyclerView.setAdapter(courseAdapter);
+                                cRecyclerView.setLayoutManager(new LinearLayoutManager(TermDetails.this));
+                                List <Course> cList = null;
+                                courseAdapter.setCourses(cList);
+                                courseAdapter.notifyDataSetChanged();
+
+
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                        }
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
         }
         return super.onOptionsItemSelected(item);
     }

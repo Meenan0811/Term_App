@@ -328,7 +328,7 @@ public class ModifyCourses extends AppCompatActivity {
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
                 Date date = null;
 
-                try {
+                /*try {
                     allTerms = repository.getAllTerms();
                     String termName = termSpinner.getSelectedItem().toString();
                     for (Term t : allTerms) {
@@ -339,9 +339,6 @@ public class ModifyCourses extends AppCompatActivity {
                             termName = t.getTermName();
                             termStart = t.getStartDate();
                             termEnd = t.getEndDate();
-
-                            date = sdf.parse(startDate);
-
                             mCourse = new Course(courseId, editCourseName.getText().toString(), startDate, editCourseEnd.getText().toString(), courseStatus, termId);
                             try {
                                 repository.update(mCourse);
@@ -359,19 +356,24 @@ public class ModifyCourses extends AppCompatActivity {
                             }
                         }
                     }
-                } catch (InterruptedException | ParseException e) {
+                } catch (InterruptedException e) {
                     e.printStackTrace();
+                } */
+
+                try {
+                    date = sdf.parse(startDate);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
                 }
 
                 Long trigger = date.getTime();
                 Intent intent = new Intent(ModifyCourses.this, CourseReceiver.class);
-                intent.putExtra("key", startDate + "Course Start Date is Today");
+                intent.putExtra("courseNotification", startDate + "Course Start Date is Today");
                 PendingIntent sender = PendingIntent.getBroadcast(ModifyCourses.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
-
-
-                    return true;
+                Toast.makeText(ModifyCourses.this, "Notification set", Toast.LENGTH_LONG).show();
+                return true;
 
                     case R.id.backtoterm:
                         Toast.makeText(ModifyCourses.this, "Back To Term ID: " + termId, Toast.LENGTH_LONG).show();

@@ -23,6 +23,8 @@ import com.Meenan.Term_App.R;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static int numAlert;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,13 +40,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.actionbar_menu, menu);
         return true;
     }
 
-    public static int numAlert;
 
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;

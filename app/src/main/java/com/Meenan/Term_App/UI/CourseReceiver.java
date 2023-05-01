@@ -16,8 +16,6 @@ public class CourseReceiver extends BroadcastReceiver {
     String channel_id = "Course Notification";
     static int notifcationID;
 
-
-    @SuppressLint("NotificationPermission")
     @Override
     public void onReceive(Context context, Intent intent) {
         createNotificationChannel(context, channel_id);
@@ -28,14 +26,13 @@ public class CourseReceiver extends BroadcastReceiver {
                 .build();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(notifcationID++, n);
-
     }
 
-    private void createNotificationChannel(Context context, String channel_id) {
+    private void createNotificationChannel(Context context, String CHANNEL_ID) {
         CharSequence name = "Course Channel";
         String descr = "Notication for Course";
         int importance = NotificationManager.IMPORTANCE_HIGH;
-        NotificationChannel channel = new NotificationChannel(channel_id, name, importance);
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
         channel.setDescription(descr);
         NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
