@@ -154,8 +154,9 @@ public class TermDetails extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Toast.makeText(TermDetails.this, "ON Resume called. TermID: " + Integer.toString(termId) +  mTermName, Toast.LENGTH_LONG).show();
-        termId = getIntent().getIntExtra("termID", -1);
+
+
+        /*termId = getIntent().getIntExtra("termID", -1);
         mTermName = getIntent().getStringExtra("termName");
         startDate = getIntent().getStringExtra("termStart");
         endDate = getIntent().getStringExtra("termEnd");
@@ -186,7 +187,7 @@ public class TermDetails extends AppCompatActivity {
                 allTermCourses = null;
                 courseAdapter.setCourses(allTermCourses);
             }
-        }
+        }*/
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
