@@ -13,7 +13,7 @@ import com.Meenan.Term_App.Entities.Assesment;
 import com.Meenan.Term_App.Entities.Course;
 import com.Meenan.Term_App.Entities.Term;
 
-@Database(entities = {Course.class, Term.class, Assesment.class}, version = 7, exportSchema = false)
+@Database(entities = {Course.class, Term.class, Assesment.class}, version = 8, exportSchema = false)
 public abstract class TermCourseDataBase extends RoomDatabase {
 
     public abstract CourseDAO courseDAO();
