@@ -37,11 +37,13 @@ public class ModifyCourses extends AppCompatActivity {
     private EditText editCourseName;
     private EditText editCourseStart;
     private EditText editCourseEnd;
+    private EditText editCourseNotes;
     private int courseId;
     private String courseName;
     private String courseStatus;
     private String courseStartDate;
     private String courseEndDate;
+    private String courseNotes;
     private TextView mentorEmail;
     private TextView mentorPhone;
     private int mentorId;
@@ -74,12 +76,12 @@ public class ModifyCourses extends AppCompatActivity {
         editCourseName = findViewById(R.id.editcoursename);
         editCourseStart = findViewById(R.id.editcoursestart);
         editCourseEnd = findViewById(R.id.editcourseend);
+        editCourseNotes = findViewById(R.id.editcoursenotes);
         courseStatusSpinner = findViewById(R.id.coursestatusspinner);
         mentorName = findViewById(R.id.mentorname);
         mentorEmail = findViewById(R.id.curinstructoremail);
         mentorPhone = findViewById(R.id.curinstructorphone);
         addAssesmentFb = findViewById(R.id.addassesmentfb);
-        termSpinner = findViewById(R.id.termspinner);
         addMentor = findViewById(R.id.addmentorbutton);
         courseAssSpinner = findViewById(R.id.assignedassesment);
 
@@ -89,6 +91,7 @@ public class ModifyCourses extends AppCompatActivity {
         courseStatus = getIntent().getStringExtra("status");
         courseStartDate = getIntent().getStringExtra("startDate");
         courseEndDate = getIntent().getStringExtra("endDate");
+        courseNotes = getIntent().getStringExtra("courseNotes");
 
         //Populate Course Status Spinner
         ArrayAdapter<CharSequence> ad = ArrayAdapter.createFromResource(this, R.array.course_status, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
@@ -97,7 +100,7 @@ public class ModifyCourses extends AppCompatActivity {
 
 
         //Populate Term Spinner FIXME: Delete if not necessary
-        repository = new Repository(getApplication());
+        /*repository = new Repository(getApplication());
         List<String> termList;
         try {
             allTerms = repository.getAllTerms();
@@ -119,15 +122,15 @@ public class ModifyCourses extends AppCompatActivity {
         }
         ArrayAdapter<CharSequence> termAd = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         termAd.addAll(termList);
-        termSpinner.setAdapter(termAd);
+        termSpinner.setAdapter(termAd);*/
 
-        //List of All Mentors
-        allMentors = new ArrayList<>();
+        //List of All Mentors FIXME: Delete me
+        /*allMentors = new ArrayList<>();
         try {
             allMentors = repository.getAllMentors();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
+        }*/
 
         //List of All Assesments
         try {
@@ -142,6 +145,7 @@ public class ModifyCourses extends AppCompatActivity {
             editCourseName.setText(courseName);
             editCourseStart.setText(courseStartDate);
             editCourseEnd.setText(courseEndDate);
+            editCourseNotes.setText(courseNotes);
             int curposition = ad.getPosition(courseStatus);
             courseStatusSpinner.setSelection(curposition);
             populateMentor(courseId);
@@ -156,19 +160,17 @@ public class ModifyCourses extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     allTerms = repository.getAllTerms();
-                    String termName = termSpinner.getSelectedItem().toString();
                     for (Term t : allTerms) {
-                        String curTerm = t.getTermName();
-                        if (termName.equals(curTerm)) {
+                        int curTerm = t.getTermID();
+                        if (termId == curTerm) {
                             courseStatus = courseStatusSpinner.getSelectedItem().toString();
                             termId = t.getTermID();
                             termName = t.getTermName();
                             termStart = t.getStartDate();
                             termEnd = t.getEndDate();
-                            mCourse = new Course(courseId, editCourseName.getText().toString(), editCourseStart.getText().toString(), editCourseEnd.getText().toString(), courseStatus, termId);
+                            mCourse = new Course(courseId, editCourseName.getText().toString(), editCourseStart.getText().toString(), editCourseEnd.getText().toString(), courseStatus, editCourseNotes.getText().toString(), termId);
                             try {
                                 repository.update(mCourse);
-                                // FIXME: addCourseMentor(mentorNamesSpinner.getSelectedItem().toString(), courseId);
                                 Toast.makeText(ModifyCourses.this, "Course has been Updated", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(ModifyCourses.this, TermDetails.class);
                                 intent.putExtra("termID", termId);
@@ -185,7 +187,6 @@ public class ModifyCourses extends AppCompatActivity {
                     }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
-                    //}
                 }
             }
         });

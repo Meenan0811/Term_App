@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.addsampledata:
                 Repository repository = new Repository(getApplication());
                 Term term = new Term("01/01/2023", "01/30/2023", "Sample Term");
-                Course course = new Course("Sample Course", "01/01/23", "01/31/23", "Completed", 1);
+                Course course = new Course("Sample Course", "01/01/23", "01/31/23", "Completed", "Notes go Here",  1);
                 Mentor mentor = new Mentor("Sample Mentor","1234567890", "mentor2@wgu.edu", 1);
                 Assesment assesment = new Assesment("Sample Assesment","01/31/23", "01/31/23", "Performance",1);
                 try {

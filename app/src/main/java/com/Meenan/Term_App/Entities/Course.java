@@ -13,25 +13,28 @@ public class Course {
     private String startDate;
     private String endDate;
     private String courseStatus;
+    private String notes;
     private int termID_FK;
 
 
 
 
-    public Course(String courseName, String startDate, String endDate, String courseStatus, int termId_FK) {
+    public Course(String courseName, String startDate, String endDate, String courseStatus, String notes, int termId_FK) {
         this.courseName = courseName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.courseStatus = courseStatus;
+        this.notes = notes;
         this.termID_FK = termId_FK;
     }
 
-    public Course(int courseID, String courseName, String startDate, String endDate, String courseStatus, int termId_FK) {
+    public Course(int courseID, String courseName, String startDate, String endDate, String courseStatus, String notes,  int termId_FK) {
         this.courseID = courseID;
         this.courseName = courseName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.courseStatus = courseStatus;
+        this.notes = notes;
         this.termID_FK = termId_FK;
     }
 
@@ -84,4 +87,7 @@ public class Course {
         this.termID_FK = termId_FK;
     }
 
+    public String getNotes() { return notes; }
+
+    public void setNotes(String notes) { this.notes = notes; }
 }

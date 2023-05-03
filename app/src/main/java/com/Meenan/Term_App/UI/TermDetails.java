@@ -117,7 +117,7 @@ public class TermDetails extends AppCompatActivity {
                 Intent intent = new Intent(TermDetails.this, ViewCourses.class);
                 //startActivity(intent);
                 repository = new Repository(getApplication());
-                mCourse = new Course("New Course", "01/01/1973", "01/30/1973", "In Progress", termId);
+                mCourse = new Course("New Course", "01/01/1973", "01/30/1973", "In Progress", "Notes Added Here", termId);
                 try {
                     repository.insert(mCourse);
                     Toast.makeText(TermDetails.this, "New Course Added", Toast.LENGTH_LONG).show();
