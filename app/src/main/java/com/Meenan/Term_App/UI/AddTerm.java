@@ -44,7 +44,7 @@ public class AddTerm extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener endDate;
     final Calendar calStart = Calendar.getInstance(Locale.US);
     final Calendar calEnd = Calendar.getInstance(Locale.US);
-    private SimpleDateFormat sFormatter = new SimpleDateFormat("MM/dd/yyyy");
+    private SimpleDateFormat sFormatter = new SimpleDateFormat("MM/dd/yy");
 
 
     @Override
@@ -57,7 +57,7 @@ public class AddTerm extends AppCompatActivity {
         tName = getIntent().getStringExtra("termName");
         tStart = getIntent().getStringExtra("termStart");
         tEnd = getIntent().getStringExtra("termEnd");
-        tId = getIntent().getIntExtra("termId", -1);
+        tId = getIntent().getIntExtra("termID", -1);
 
 
         //Assign variables to activity Id's
@@ -74,6 +74,7 @@ public class AddTerm extends AppCompatActivity {
 
         //Set EditText fields with pass Term data
         if (tId != -1) {
+            Toast.makeText(this, "tName", Toast.LENGTH_LONG).show();
             termName.setText(tName);
             termStart.setText(tStart);
             termEnd.setText(tEnd);

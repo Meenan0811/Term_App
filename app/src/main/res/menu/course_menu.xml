@@ -3,9 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:title="Set Notification"
-        android:id="@+id/setnotifcation"
-        app:showAsAction="ifRoom" />
+        android:title="Set Start Notification"
+        android:id="@+id/setstartnotifcation"
+        app:showAsAction="never" />
+
+    <item
+        android:title="Set End Notification"
+        android:id="@+id/setendnotifcation"
+        app:showAsAction="never" />
 
     <item
         android:title="Delete Course"
@@ -14,6 +19,6 @@
     <item
         android:title="Back"
         android:id="@+id/backtoterm"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
 
 </menu>

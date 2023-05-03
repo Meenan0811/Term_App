@@ -40,14 +40,10 @@ public class TermDetails extends AppCompatActivity {
     private String endDate;
     private Term mTerm;
     private Repository repository;
-    Term currTerm;
-    int numTerms;
-    List<Term> allTerms;
-    List<Term> filteredTerms;
     Button editTerm;
     FloatingActionButton addCourse;
     DatePickerDialog.OnDateSetListener startDateCal;
-    DatePickerDialog.OnDateSetListener endDateCale;
+    DatePickerDialog.OnDateSetListener endDateCal;
     final Calendar calStart = Calendar.getInstance();
     final Calendar calEnd = Calendar.getInstance();
     private Course mCourse;
@@ -120,36 +116,6 @@ public class TermDetails extends AppCompatActivity {
                 intent.putExtra("termStart", startDate);
                 intent.putExtra("termEnd", endDate);
                 startActivity(intent);
-                /*repository = new Repository(getApplication());
-                mCourse = new Course("New Course", "01/01/1973", "01/30/1973", "In Progress", "Notes Added Here", termId);
-                try {
-                    repository.insert(mCourse);
-                    Toast.makeText(TermDetails.this, "New Course Added", Toast.LENGTH_LONG).show();
-
-                    RecyclerView cRecyclerView = findViewById(R.id.assignedcourserecyclerview);
-                    final CourseAdapter courseAdapter = new CourseAdapter(TermDetails.this);
-                    cRecyclerView.setAdapter(courseAdapter);
-                    cRecyclerView.setLayoutManager(new LinearLayoutManager(TermDetails.this));
-
-                    List<Course> allTermCourses = new ArrayList<>();
-
-                    for (Course c : repository.getAllCourses())
-                        if (c.getTermID_FK() == termId) allTermCourses.add(c);
-
-                    if (allTermCourses.size() != 0) {
-                        courseAdapter.setCourses(allTermCourses);
-                        courseAdapter.notifyDataSetChanged();
-                    } else {
-                        allTermCourses = null;
-                        courseAdapter.setCourses(allTermCourses);
-                        courseAdapter.notifyDataSetChanged();
-                    }
-
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    Toast.makeText(TermDetails.this, "Unable to add Course, please try again", Toast.LENGTH_LONG).show();
-                } */
             }
         });
     }
@@ -157,41 +123,6 @@ public class TermDetails extends AppCompatActivity {
 
     protected void onResume() {
         super.onResume();
-
-
-
-        /*termId = getIntent().getIntExtra("termID", -1);
-        mTermName = getIntent().getStringExtra("termName");
-        startDate = getIntent().getStringExtra("termStart");
-        endDate = getIntent().getStringExtra("termEnd");
-        repository = new Repository(getApplication());
-
-        if (termId != -1) {
-            editName.setText(mTermName);
-            editStart.setText(startDate);
-            editEnd.setText(endDate);
-
-            RecyclerView cRecyclerView = findViewById(R.id.assignedcourserecyclerview);
-            final CourseAdapter courseAdapter = new CourseAdapter(this);
-            cRecyclerView.setAdapter(courseAdapter);
-            cRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            courseAdapter.notifyDataSetChanged();
-
-
-            List<Course> allTermCourses = new ArrayList<>();
-            try {
-                for (Course c : repository.getAllCourses())
-                    if (c.getTermID_FK() == termId) allTermCourses.add(c);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (allTermCourses.size() != 0) {
-                courseAdapter.setCourses(allTermCourses);
-            } else {
-                allTermCourses = null;
-                courseAdapter.setCourses(allTermCourses);
-            }
-        }*/
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

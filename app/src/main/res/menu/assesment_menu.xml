@@ -2,9 +2,25 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+    <item
+        android:title="Set Start Notification"
+        android:id="@+id/assstartnotifcation"
+        app:showAsAction="never" />
+
+    <item
+        android:title="Set End Notification"
+        android:id="@+id/assendnotifcation"
+        app:showAsAction="never" />
+
+    <item
+        android:title="Back"
+        android:id="@+id/assback"
+        app:showAsAction="always" />
+
     <item
         android:title="Delete Assesment"
         android:id="@+id/deleteassesment"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
 </menu>

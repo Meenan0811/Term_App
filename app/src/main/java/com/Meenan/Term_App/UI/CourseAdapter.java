@@ -70,7 +70,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             Course curCourse = mCourses.get(position);
             String courseName = curCourse.getCourseName();
             String courseStatus = curCourse.getCourseStatus();
-            holder.courseItemView.setText(courseName + "   " + courseStatus);
+            holder.courseItemView.setText(courseName);
         }
     }
 

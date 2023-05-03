@@ -2,6 +2,10 @@ package com.Meenan.Term_App.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,27 +13,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Meenan.Term_App.Database.Repository;
 import com.Meenan.Term_App.Entities.Assesment;
 import com.Meenan.Term_App.Entities.Course;
+import com.Meenan.Term_App.Entities.Term;
 import com.Meenan.Term_App.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AddAssesment extends AppCompatActivity {
 
     private Intent intent;
     private EditText editTitle;
     private Spinner assTypeSpinner;
-    private EditText startDate;
-    private EditText editDate;
+    private EditText editStartDate;
+    private EditText editEndDate;
     private TextView assLabel;
     private int courseId;
     private int assId;
@@ -40,12 +52,25 @@ public class AddAssesment extends AppCompatActivity {
     private Button saveButton;
     private Assesment mAss;
     private List<Course> allCourse = new ArrayList<>();
+    private List<Term> allTerms = new ArrayList<>();
     Repository repository;
     private String courseName;
     private String courseStart;
     private String courseEnd;
     private String courseStatus;
     private int courseTerm;
+    private int termId;
+    private String termName;
+    private String termStart;
+    private String termEnd;
+    private DateTimeFormatter formatter;
+    private String currTime;
+    private String endTime;
+    private DatePickerDialog.OnDateSetListener startDate;
+    private DatePickerDialog.OnDateSetListener endDate;
+    final Calendar calStart = Calendar.getInstance(Locale.US);
+    final Calendar calEnd = Calendar.getInstance(Locale.US);
+    private SimpleDateFormat sFormatter = new SimpleDateFormat("MM/dd/yy");
 
 
     @Override
@@ -55,14 +80,20 @@ public class AddAssesment extends AppCompatActivity {
 
         //Assign local variables to activity ID
         editTitle = findViewById(R.id.editassesmenttitle);
-        editDate = findViewById(R.id.editassesmentend);
+        editEndDate = findViewById(R.id.editassesmentend);
         assLabel = findViewById(R.id.assesmentlabel);
         saveButton = findViewById(R.id.saveassesmentbutton);
-        startDate = findViewById(R.id.assstartedit);
+        editStartDate = findViewById(R.id.assstartedit);
         assTypeSpinner = findViewById(R.id.asstypespinner);
+
+        //Retrieve Today's Date and 1 month out using format MM/dd/yyyy
+        formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        currTime = LocalDate.now().format(formatter);
+        endTime = LocalDate.now().plusMonths(6).format(formatter);
 
         //Assign data passed from previoous screen to local variables
         courseId = getIntent().getIntExtra("courseID", -1);
+        termId = getIntent().getIntExtra("termID", -1);
         assTitle = getIntent().getStringExtra("assTitle");
         assEnd = getIntent().getStringExtra("assEnd");
         assId = getIntent().getIntExtra("assId", -1);
@@ -76,14 +107,15 @@ public class AddAssesment extends AppCompatActivity {
 
         if (assId != -1) {
             editTitle.setText(assTitle);
-            editDate.setText(assEnd);
-            startDate.setText(assStart);
+            editEndDate.setText(assEnd);
+            editStartDate.setText(assStart);
             assLabel.setText("Edit Assessment");
         } else { assLabel.setText("Add Assessment"); }
 
         try {
             repository = new Repository(getApplication());
             allCourse = repository.getAllCourses();
+            allTerms = repository.getAllTerms();
             for (Course c : allCourse) {
                 if (courseId == c.getCourseID()) {
                     courseName = c.getCourseName();
@@ -91,6 +123,13 @@ public class AddAssesment extends AppCompatActivity {
                     courseEnd = c.getEndDate();
                     courseStatus = c.getCourseStatus();
                     courseTerm = c.getTermID_FK();
+                }
+            }
+            for (Term t : allTerms) {
+                if (termId == t.getTermID()) {
+                    termName = t.getTermName();
+                    termEnd = t.getEndDate();
+                    termStart = t.getStartDate();
                 }
             }
         } catch (InterruptedException e) {
@@ -102,17 +141,20 @@ public class AddAssesment extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 intent = new Intent(AddAssesment.this, ModifyCourses.class);
-                intent.putExtra("courseId", courseId);
+                intent.putExtra("courseID", courseId);
                 intent.putExtra("courseName", courseName);
                 intent.putExtra("status", courseStatus);
                 intent.putExtra("startDate", courseStart);
                 intent.putExtra("endDate", courseEnd);
-                intent.putExtra("termID", courseTerm);
+                intent.putExtra("termID", termId);
+                intent.putExtra("termName", termName);
+                intent.putExtra("termStart", termStart);
+                intent.putExtra("termEnd", termEnd);
 
                 Repository repository = new Repository(getApplication());
                 assTitle = editTitle.getText().toString();
-                assEnd = editDate.getText().toString();
-                assStart = startDate.getText().toString();
+                assEnd = editEndDate.getText().toString();
+                assStart = editStartDate.getText().toString();
                 assType = assTypeSpinner.getSelectedItem().toString();
                 if (assId != -1) {
                     mAss = new Assesment(assId, assTitle, assStart,  assEnd,assType, courseId);
@@ -135,27 +177,131 @@ public class AddAssesment extends AppCompatActivity {
                 }
             }
         });
+
+        editStartDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Date date;
+                String sd = editStartDate.getText().toString();
+                if (sd.equals("")) sd = currTime;
+                try {
+                    calStart.setTime(sFormatter.parse(sd));
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                new DatePickerDialog(AddAssesment.this, startDate, calStart.get(Calendar.YEAR), calStart.get(Calendar.MONTH), calStart.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+        startDate = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int dom) {
+                calStart.set(Calendar.YEAR, year);
+                calStart.set(Calendar.MONTH, month);
+                calStart.set(Calendar.DAY_OF_MONTH, dom);
+
+                updateCal(editStartDate, calStart);
+            }
+        };
+
+        editEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Date date;
+                String sd = editEndDate.getText().toString();
+                if (sd.equals("")) sd = endTime;
+                try {
+                    calEnd.setTime(sFormatter.parse(sd));
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                new DatePickerDialog(AddAssesment.this, endDate, calEnd.get(Calendar.YEAR), calEnd.get(Calendar.MONTH), calEnd.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        endDate = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int dom) {
+                calEnd.set(Calendar.YEAR, year);
+                calEnd.set(Calendar.MONTH, month);
+                calEnd.set(Calendar.DAY_OF_MONTH, dom);
+
+                updateCal(editEndDate, calEnd);
+            }
+        };
+    }
+
+    public void updateCal(EditText et, Calendar cal) {
+        String format = "MM/dd/yy";
+        SimpleDateFormat sFormat = new SimpleDateFormat(format, Locale.US);
+        et.setText(sFormat.format(cal.getTime()));
     }
 
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
-            getMenuInflater().inflate(R.menu.back_menu, menu);
+            getMenuInflater().inflate(R.menu.assesment_menu, menu);
             return true;
     }
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.back) {
-            intent = new Intent(AddAssesment.this, ModifyCourses.class);
-            intent.putExtra("courseID", courseId);
-            intent.putExtra("courseName", courseName);
-            intent.putExtra("status", courseStatus);
-            intent.putExtra("startDate", courseStart);
-            intent.putExtra("endDate", courseEnd);
-            intent.putExtra("termID", courseTerm);
-            startActivity(intent);
-            return true;
+        switch(item.getItemId()) {
+
+            case R.id.assback:
+                intent = new Intent(AddAssesment.this, ModifyCourses.class);
+                intent.putExtra("courseID", courseId);
+                intent.putExtra("courseName", courseName);
+                intent.putExtra("status", courseStatus);
+                intent.putExtra("startDate", courseStart);
+                intent.putExtra("endDate", courseEnd);
+                intent.putExtra("termID", termId);
+                intent.putExtra("termName", termName);
+                intent.putExtra("termStart", termStart);
+                intent.putExtra("termEnd", termEnd);
+                Toast.makeText(AddAssesment.this, "Term Name: " + termName + " Term ID: " + termId, Toast.LENGTH_LONG).show();
+                startActivity(intent);
+                return true;
+
+            case R.id.assstartnotifcation:
+                String startDate = editStartDate.getText().toString();
+                String myFormat = "MM/dd/yy";
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                Date date = null;
+
+                try {
+                    date = sdf.parse(startDate);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+
+                Long trigger = date.getTime();
+                Intent intent = new Intent(AddAssesment.this, CourseReceiver.class);
+                intent.putExtra("courseNotification", startDate + "Assessment Start Date is Today");
+                PendingIntent sender = PendingIntent.getBroadcast(AddAssesment.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+                Toast.makeText(AddAssesment.this, "Notification set", Toast.LENGTH_LONG).show();
+
+            case R.id.assendnotifcation:
+                String endDate = editEndDate.getText().toString();
+                myFormat = "MM/dd/yy";
+                sdf = new SimpleDateFormat(myFormat, Locale.US);
+                date = null;
+
+                try {
+                    date = sdf.parse(endDate);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+
+                trigger = date.getTime();
+                intent = new Intent(AddAssesment.this, CourseReceiver.class);
+                intent.putExtra("courseNotification", endDate + "Assessment End Date is Today");
+                sender = PendingIntent.getBroadcast(AddAssesment.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+                alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+                Toast.makeText(AddAssesment.this, "Notification set", Toast.LENGTH_LONG).show();
+                return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 }
 
