@@ -1,9 +1,11 @@
 package com.Meenan.Term_App.UI;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -34,6 +36,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ModifyCourses extends AppCompatActivity {
 
@@ -213,12 +216,53 @@ public class ModifyCourses extends AppCompatActivity {
         addAssesmentFb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<Assesment> allAssess = new ArrayList<>();
                 repository = new Repository(getApplication());
-                Intent intent = new Intent(ModifyCourses.this, AddAssesment.class);
-                intent.putExtra("courseID", courseId);
-                intent.putExtra("termID", courseTermId);
-                startActivity(intent);
+
+                if (courseId != -1) {
+                    if (courseAssSpinner.getSelectedItem() != null) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ModifyCourses.this);
+                        AlertDialog alertDialog = null;
+                        builder.setMessage("Would you like to edit the selected Assessment or Add a new one?");
+                        builder.setTitle("Assessment");
+                        builder.setPositiveButton("Edit Selected", (DialogInterface.OnClickListener) (dialog, which) -> {
+                            String curAss = courseAssSpinner.getSelectedItem().toString();
+                            String assTitle = "";
+                            String assStart = "";
+                            String assEnd = "";
+                            int assId = 0;
+                            for (Assesment a : allAssesmentList) {
+                                if (a.getName().equals(curAss)) {
+                                    assId = a.getAssesmentID();
+                                    assTitle = a.getName();
+                                    assStart = a.getStartDate();
+                                    assEnd = a.getEndDate();
+                                }
+                            }
+                            Intent intent = new Intent(ModifyCourses.this, AddAssesment.class);
+                            intent.putExtra("courseID", courseId);
+                            intent.putExtra("termID", courseTermId);
+                            intent.putExtra("assTitle" , assTitle);
+                            intent.putExtra("assStart", assStart);
+                            intent.putExtra("assEnd", assEnd);
+                            intent.putExtra("assID", assId);
+                            Toast.makeText(ModifyCourses.this, "Ass ID: " + assId + " Ass Name: " + assTitle, Toast.LENGTH_LONG).show();
+                            startActivity(intent);
+                        });
+                        builder.setNeutralButton("Add New", (DialogInterface.OnClickListener) (dialog, which) -> {
+                            Intent intent = new Intent(ModifyCourses.this, AddAssesment.class);
+                            intent.putExtra("courseID", courseId);
+                            intent.putExtra("termID", courseTermId);
+                            startActivity(intent);
+                        });
+                        alertDialog = builder.create();
+                        alertDialog.show();
+                    } else {
+                        Intent intent = new Intent(ModifyCourses.this, AddAssesment.class);
+                        intent.putExtra("courseID", courseId);
+                        intent.putExtra("termID", courseTermId);
+                        startActivity(intent);
+                    }
+                }else { Toast.makeText(ModifyCourses.this, "Please Save Course before Adding Assessments", Toast.LENGTH_LONG).show(); }
             }
         });
 

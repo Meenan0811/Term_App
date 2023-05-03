@@ -58,6 +58,10 @@ public class AddAssesment extends AppCompatActivity {
     private String courseStart;
     private String courseEnd;
     private String courseStatus;
+    private String courseNotes;
+    private String instName;
+    private String instEmail;
+    private String instPhone;
     private int courseTerm;
     private int termId;
     private String termName;
@@ -96,7 +100,7 @@ public class AddAssesment extends AppCompatActivity {
         termId = getIntent().getIntExtra("termID", -1);
         assTitle = getIntent().getStringExtra("assTitle");
         assEnd = getIntent().getStringExtra("assEnd");
-        assId = getIntent().getIntExtra("assId", -1);
+        assId = getIntent().getIntExtra("assID", -1);
         assStart = getIntent().getStringExtra("assStart");
         assType = getIntent().getStringExtra("assType");
 
@@ -104,6 +108,8 @@ public class AddAssesment extends AppCompatActivity {
         ArrayAdapter<CharSequence> ad = ArrayAdapter.createFromResource(this, R.array.ass_spinner, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         ad.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         assTypeSpinner.setAdapter(ad);
+
+        Toast.makeText(this, "Ass ID: " + assId + " Ass Name: " + assTitle, Toast.LENGTH_LONG).show();
 
         if (assId != -1) {
             editTitle.setText(assTitle);
@@ -123,6 +129,10 @@ public class AddAssesment extends AppCompatActivity {
                     courseEnd = c.getEndDate();
                     courseStatus = c.getCourseStatus();
                     courseTerm = c.getTermID_FK();
+                    courseNotes = c.getNotes();
+                    instName = c.getInstName();
+                    instEmail = c.getInstEmail();
+                    instPhone = c.getInstPhone();
                 }
             }
             for (Term t : allTerms) {
@@ -147,6 +157,10 @@ public class AddAssesment extends AppCompatActivity {
                 intent.putExtra("startDate", courseStart);
                 intent.putExtra("endDate", courseEnd);
                 intent.putExtra("course_termID", courseTerm);
+                intent.putExtra("courseNotes", courseNotes);
+                intent.putExtra("instName", instName);
+                intent.putExtra("instEmail", instEmail);
+                intent.putExtra("instPhone", instPhone);
                 intent.putExtra("termID", termId);
                 intent.putExtra("termName", termName);
                 intent.putExtra("termStart", termStart);
@@ -254,6 +268,10 @@ public class AddAssesment extends AppCompatActivity {
                 intent.putExtra("startDate", courseStart);
                 intent.putExtra("endDate", courseEnd);
                 intent.putExtra("course_termID", courseTerm);
+                intent.putExtra("courseNotes", courseNotes);
+                intent.putExtra("instName", instName);
+                intent.putExtra("instEmail", instEmail);
+                intent.putExtra("instPhone", instPhone);
                 intent.putExtra("termID", termId);
                 intent.putExtra("termName", termName);
                 intent.putExtra("termStart", termStart);
