@@ -2,15 +2,11 @@ package com.Meenan.Term_App.Database;
 
 import android.app.Application;
 
-import androidx.room.Database;
-
 import com.Meenan.Term_App.DAO.AssesmentDAO;
 import com.Meenan.Term_App.DAO.CourseDAO;
-import com.Meenan.Term_App.DAO.MentorDAO;
 import com.Meenan.Term_App.DAO.TermDAO;
 import com.Meenan.Term_App.Entities.Assesment;
 import com.Meenan.Term_App.Entities.Course;
-import com.Meenan.Term_App.Entities.Mentor;
 import com.Meenan.Term_App.Entities.Term;
 
 import java.util.List;
@@ -22,12 +18,10 @@ public class Repository {
 
     private final CourseDAO mCourseDAO;
     private final TermDAO mTermDAO;
-    private final MentorDAO mMentorDAO;
     private final AssesmentDAO mAssesmentDAO;
 
     private List<Course> mAllCourses;
     private List<Term> mAllTerms;
-    private List<Mentor> mAllMentors;
     private List<Assesment> mAllAssesments;
     private Term mTerm;
 
@@ -38,7 +32,6 @@ public class Repository {
         TermCourseDataBase termDb = TermCourseDataBase.getDataBase(app);
         mCourseDAO = termDb.courseDAO();
         mTermDAO = termDb.termDAO();
-        mMentorDAO = termDb.mentorDAO();
         mAssesmentDAO = termDb.assesmentDAO();
     }
 
@@ -103,35 +96,6 @@ public class Repository {
     public void delete(Course course) throws InterruptedException {
         dbExecutor.execute(() -> {
             mCourseDAO.delete(course);
-        });
-        Thread.sleep(1000);
-    }
-
-    public List<Mentor> getAllMentors() throws InterruptedException {
-        dbExecutor.execute(() -> {
-            mAllMentors = mMentorDAO.getAllMentors();
-        });
-        Thread.sleep(1000);
-        return mAllMentors;
-    }
-
-    public void insert(Mentor mentor) throws InterruptedException {
-        dbExecutor.execute(() -> {
-           mMentorDAO.insert(mentor);
-        });
-        Thread.sleep(1000);
-    }
-
-    public void update(Mentor mentor) throws InterruptedException {
-        dbExecutor.execute(() -> {
-            mMentorDAO.update(mentor);
-        });
-        Thread.sleep(1000);
-    }
-
-    public void delete(Mentor mentor) throws InterruptedException {
-        dbExecutor.execute(() -> {
-            mMentorDAO.delete(mentor);
         });
         Thread.sleep(1000);
     }

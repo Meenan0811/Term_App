@@ -28,10 +28,6 @@
             android:name=".UI.ViewCourses"
             android:exported="false" />
         <activity
-            android:name=".UI.ViewMentors"
-            android:exported="false"
-            android:label="Mentors"/>
-        <activity
             android:name=".UI.ViewTerm"
             android:exported="false"
             android:label="View Terms" />

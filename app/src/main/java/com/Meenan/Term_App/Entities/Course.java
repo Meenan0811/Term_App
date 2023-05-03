@@ -14,27 +14,36 @@ public class Course {
     private String endDate;
     private String courseStatus;
     private String notes;
+    private String instName;
+    private String instEmail;
+    private String instPhone;
     private int termID_FK;
 
 
 
 
-    public Course(String courseName, String startDate, String endDate, String courseStatus, String notes, int termId_FK) {
+    public Course(String courseName, String startDate, String endDate, String courseStatus, String notes, String instName, String instEmail, String instPhone, int termId_FK) {
         this.courseName = courseName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.courseStatus = courseStatus;
         this.notes = notes;
+        this.instName = instName;
+        this.instEmail = instEmail;
+        this.instPhone = instPhone;
         this.termID_FK = termId_FK;
     }
 
-    public Course(int courseID, String courseName, String startDate, String endDate, String courseStatus, String notes,  int termId_FK) {
+    public Course(int courseID, String courseName, String startDate, String endDate, String courseStatus, String notes, String instName, String instEmail, String instPhone,  int termId_FK) {
         this.courseID = courseID;
         this.courseName = courseName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.courseStatus = courseStatus;
         this.notes = notes;
+        this.instName = instName;
+        this.instEmail = instEmail;
+        this.instPhone = instPhone;
         this.termID_FK = termId_FK;
     }
 
@@ -90,4 +99,24 @@ public class Course {
     public String getNotes() { return notes; }
 
     public void setNotes(String notes) { this.notes = notes; }
+
+    public String getInstName() { return instName; }
+
+    public void setInstName(String instName) { this.instName = instName; }
+
+    public String getInstEmail() {
+        return instEmail;
+    }
+
+    public void setInstEmail(String instEmail) {
+        this.instEmail = instEmail;
+    }
+
+    public String getInstPhone() {
+        return instPhone;
+    }
+
+    public void setInstPhone(String instPhone) {
+        this.instPhone = instPhone;
+    }
 }

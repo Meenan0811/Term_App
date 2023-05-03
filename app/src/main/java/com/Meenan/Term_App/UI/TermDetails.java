@@ -101,7 +101,7 @@ public class TermDetails extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(TermDetails.this, AddTerm.class);
                 Toast.makeText(TermDetails.this, "Passing Term ID " + termId, Toast.LENGTH_LONG).show();
-                intent.putExtra("termId", termId);
+                intent.putExtra("termID", termId);
                 intent.putExtra("termName", mTermName);
                 intent.putExtra("termStart", startDate);
                 intent.putExtra("termEnd", endDate);
@@ -114,9 +114,13 @@ public class TermDetails extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TermDetails.this, ViewCourses.class);
-                //startActivity(intent);
-                repository = new Repository(getApplication());
+                Intent intent = new Intent(TermDetails.this, ModifyCourses.class);
+                intent.putExtra("termID", termId);
+                intent.putExtra("termName", mTermName);
+                intent.putExtra("termStart", startDate);
+                intent.putExtra("termEnd", endDate);
+                startActivity(intent);
+                /*repository = new Repository(getApplication());
                 mCourse = new Course("New Course", "01/01/1973", "01/30/1973", "In Progress", "Notes Added Here", termId);
                 try {
                     repository.insert(mCourse);
@@ -145,7 +149,7 @@ public class TermDetails extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     Toast.makeText(TermDetails.this, "Unable to add Course, please try again", Toast.LENGTH_LONG).show();
-                }
+                } */
             }
         });
     }

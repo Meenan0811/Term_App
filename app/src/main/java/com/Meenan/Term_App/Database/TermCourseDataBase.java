@@ -8,19 +8,16 @@ import androidx.room.RoomDatabase;
 
 import com.Meenan.Term_App.DAO.AssesmentDAO;
 import com.Meenan.Term_App.DAO.CourseDAO;
-import com.Meenan.Term_App.DAO.MentorDAO;
 import com.Meenan.Term_App.DAO.TermDAO;
 import com.Meenan.Term_App.Entities.Assesment;
 import com.Meenan.Term_App.Entities.Course;
-import com.Meenan.Term_App.Entities.Mentor;
 import com.Meenan.Term_App.Entities.Term;
 
-@Database(entities = {Course.class, Term.class, Mentor.class, Assesment.class}, version = 7, exportSchema = false)
+@Database(entities = {Course.class, Term.class, Assesment.class}, version = 7, exportSchema = false)
 public abstract class TermCourseDataBase extends RoomDatabase {
 
     public abstract CourseDAO courseDAO();
     public abstract TermDAO termDAO();
-    public abstract MentorDAO mentorDAO();
     public abstract AssesmentDAO assesmentDAO();
 
     public static volatile TermCourseDataBase INSTANCE;

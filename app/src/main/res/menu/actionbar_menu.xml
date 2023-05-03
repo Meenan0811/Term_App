@@ -6,12 +6,11 @@
     <item
         android:title="View Terms"
         android:id="@+id/viewterms" />
+
     <item
         android:title="View Courses"
         android:id="@+id/viewcourses" />
-    <item
-        android:title="View Mentors"
-        android:id="@+id/viewmentors" />
+
     <item
         android:title="Add Sample Data"
         android:id="@+id/addsampledata"

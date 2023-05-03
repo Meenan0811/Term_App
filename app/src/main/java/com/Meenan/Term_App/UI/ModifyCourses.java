@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.Meenan.Term_App.Database.Repository;
 import com.Meenan.Term_App.Entities.Assesment;
 import com.Meenan.Term_App.Entities.Course;
-import com.Meenan.Term_App.Entities.Mentor;
 import com.Meenan.Term_App.Entities.Term;
 import com.Meenan.Term_App.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -44,16 +42,17 @@ public class ModifyCourses extends AppCompatActivity {
     private String courseStartDate;
     private String courseEndDate;
     private String courseNotes;
-    private TextView mentorEmail;
-    private TextView mentorPhone;
-    private int mentorId;
+    private String instName;
+    private String instEmail;
+    private String instPhone;
+    private int courseTermId;
+    private EditText mentorEmail;
+    private EditText mentorPhone;
     private FloatingActionButton addAssesmentFb;
-    private TextView mentorName;
+    private EditText mentorName;
     private Spinner courseStatusSpinner;
-    private Spinner termSpinner;
     private Course mCourse;
     private Repository repository;
-    private List<Mentor> allMentors;
     private Button saveCourseButton;
     private List<Term> allTerms = new ArrayList<>();
     private Button addMentor;
@@ -63,7 +62,7 @@ public class ModifyCourses extends AppCompatActivity {
     private String termEnd;
     private Spinner courseAssSpinner;
     private List<String> assString = new ArrayList<>();
-    private List<Assesment> allAssesmentList = new ArrayList<>();
+    private List<Assesment> allAssesmentList;
     private List<Course> allCourses = new ArrayList<>();
 
 
@@ -92,50 +91,30 @@ public class ModifyCourses extends AppCompatActivity {
         courseStartDate = getIntent().getStringExtra("startDate");
         courseEndDate = getIntent().getStringExtra("endDate");
         courseNotes = getIntent().getStringExtra("courseNotes");
+        courseTermId = getIntent().getIntExtra("course_termID", -1);
+        instName = getIntent().getStringExtra("instName");
+        instEmail = getIntent().getStringExtra("instEmail");
+        instPhone = getIntent().getStringExtra("instPhone");
+
+        //Retrieve passed Term information
+        termId = getIntent().getIntExtra("termID", -1);
+        termName = getIntent().getStringExtra("termName");
+        termStart = getIntent().getStringExtra("termStart");
+        termEnd = getIntent().getStringExtra("termEnd");
+        Toast.makeText(ModifyCourses.this, "Term ID: " + termId + " Course Term ID: " + courseTermId, Toast.LENGTH_LONG).show();
 
         //Populate Course Status Spinner
         ArrayAdapter<CharSequence> ad = ArrayAdapter.createFromResource(this, R.array.course_status, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         ad.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         courseStatusSpinner.setAdapter(ad);
 
-
-        //Populate Term Spinner FIXME: Delete if not necessary
-        /*repository = new Repository(getApplication());
-        List<String> termList;
-        try {
-            allTerms = repository.getAllTerms();
-            allCourses = repository.getAllCourses();
-            termList = new ArrayList<>();
-
-            for (Term t : allTerms) {
-                String curTerm = t.getTermName();
-                termList.add(curTerm);
-                for (Course c : allCourses) {
-                    if (c.getTermID_FK() == t.getTermID()) termId = t.getTermID();
-                    termName = t.getTermName();
-                    termStart = t.getStartDate();
-                    termEnd = t.getEndDate();
-                }
-            }
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        ArrayAdapter<CharSequence> termAd = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        termAd.addAll(termList);
-        termSpinner.setAdapter(termAd);*/
-
-        //List of All Mentors FIXME: Delete me
-        /*allMentors = new ArrayList<>();
-        try {
-            allMentors = repository.getAllMentors();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }*/
+        repository = new Repository(getApplication());
 
         //List of All Assesments
+        allAssesmentList = new ArrayList<>();
         try {
             allAssesmentList = repository.getAllAssesments();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | NullPointerException e) {
             throw new RuntimeException(e);
         }
 
@@ -148,7 +127,9 @@ public class ModifyCourses extends AppCompatActivity {
             editCourseNotes.setText(courseNotes);
             int curposition = ad.getPosition(courseStatus);
             courseStatusSpinner.setSelection(curposition);
-            populateMentor(courseId);
+            mentorName.setText(instName);
+            mentorEmail.setText(instEmail);
+            mentorPhone.setText(instPhone);
             addAssesment(courseId);
         }
 
@@ -158,17 +139,46 @@ public class ModifyCourses extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                int curTerm = 0;
+                Toast.makeText(ModifyCourses.this, "Save Button Pressed", Toast.LENGTH_LONG).show();
                 try {
                     allTerms = repository.getAllTerms();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                //Add new Course Object if no Course ID is not passed from Term Screen
+                if (courseId == -1) {
+                    courseStatus = courseStatusSpinner.getSelectedItem().toString();
+                    mCourse = new Course(editCourseName.getText().toString(), editCourseStart.getText().toString(), editCourseEnd.getText().toString(), courseStatus, editCourseNotes.getText().toString(), mentorName.getText().toString(), mentorEmail.getText().toString(), mentorPhone.getText().toString(),  termId);
+                    try {
+                        repository.insert(mCourse);
+                        Toast.makeText(ModifyCourses.this, "Course has been Added", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(ModifyCourses.this, TermDetails.class);
+                        intent.putExtra("termID", termId);
+                        intent.putExtra("termName", termName);
+                        intent.putExtra("termStart", termStart);
+                        intent.putExtra("termEnd", termEnd);
+                        startActivity(intent);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                // If Course ID is passed from previous screen update existing course
+                else {
                     for (Term t : allTerms) {
-                        int curTerm = t.getTermID();
-                        if (termId == curTerm) {
+                        Toast.makeText(ModifyCourses.this, "Loop Entered Term ID: " + t.getTermID() + "CourseTerm ID: " + courseTermId, Toast.LENGTH_LONG).show();
+                        if (courseTermId == t.getTermID()) {
+                            curTerm = t.getTermID();
+                        }
+                        if (courseTermId == curTerm) {
+                            //if (courseId != -1) {
                             courseStatus = courseStatusSpinner.getSelectedItem().toString();
                             termId = t.getTermID();
                             termName = t.getTermName();
                             termStart = t.getStartDate();
                             termEnd = t.getEndDate();
-                            mCourse = new Course(courseId, editCourseName.getText().toString(), editCourseStart.getText().toString(), editCourseEnd.getText().toString(), courseStatus, editCourseNotes.getText().toString(), termId);
+                            mCourse = new Course(courseId, editCourseName.getText().toString(), editCourseStart.getText().toString(), editCourseEnd.getText().toString(), courseStatus, editCourseNotes.getText().toString(),mentorName.getText().toString(), mentorEmail.getText().toString(), mentorPhone.getText().toString(), termId);
                             try {
                                 repository.update(mCourse);
                                 Toast.makeText(ModifyCourses.this, "Course has been Updated", Toast.LENGTH_LONG).show();
@@ -182,24 +192,12 @@ public class ModifyCourses extends AppCompatActivity {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     }
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
                 }
             }
         });
 
-        addMentor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ModifyCourses.this, ViewMentors.class);
-                intent.putExtra("courseID", courseId);
-                intent.putExtra("mentorID", mentorId);
-                startActivity(intent);
-            }
-        });
 
         addAssesmentFb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,24 +211,6 @@ public class ModifyCourses extends AppCompatActivity {
         });
     }
 
-
-    //Method to populate mentor email and phone fields with currently selected mentor
-    public void populateMentor(int courseId) {
-        for (Mentor m : allMentors) {
-            if (courseId == m.getCourseID_FK()) {
-                mentorName.setText(m.getMentorName());
-                mentorEmail.setText(m.getEmail());
-                mentorPhone.setText(m.getPhone());
-                mentorId = m.getMentorID();
-                break;
-            } else {
-                mentorName.setText("Add Mentor");
-                mentorEmail.setText("Add Mentor Email");
-                mentorPhone.setText("Add Mentor Phone");
-                mentorId = -1;
-            }
-        }
-    }
 
     //Searches for any Assessments matching course ID and populates assessment label
     public void addAssesment(int courseId) {
@@ -259,7 +239,7 @@ public class ModifyCourses extends AppCompatActivity {
                 if (courseId > 0) {
                     try {
                         List<Course> courseList = repository.getAllCourses();
-                        List<Mentor> mentorList = repository.getAllMentors();
+
                         termId = getIntent().getIntExtra("termID", -1);
                         termName = getIntent().getStringExtra("termName");
                         termStart = getIntent().getStringExtra("termStart");
@@ -267,8 +247,6 @@ public class ModifyCourses extends AppCompatActivity {
                         for (Course c : courseList) {
                             if (c.getCourseID() == courseId) {
                                 repository.delete(c);
-                                for (Mentor m : mentorList)
-                                    if (m.getCourseID_FK() == courseId) repository.delete(m);
                                 Toast.makeText(ModifyCourses.this, "Course " + c.getCourseName() + " deleted", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(ModifyCourses.this, TermDetails.class);
                                 intent.putExtra("termID", termId);
@@ -347,13 +325,13 @@ public class ModifyCourses extends AppCompatActivity {
                         intent.putExtra("termEnd", termEnd);
                         startActivity(intent);
                         return true;
-                }
-            /*case R.id.back:
+
+            case R.id.back:
                 intent = new Intent(ModifyCourses.this, ViewTerm.class);
                 startActivity(intent);
-                return true;*/
-
                 return true;
+                }
+                return super.onOptionsItemSelected(item);
         }
 
         protected void onResume() {
