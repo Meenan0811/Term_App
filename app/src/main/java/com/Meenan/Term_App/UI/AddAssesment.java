@@ -146,6 +146,7 @@ public class AddAssesment extends AppCompatActivity {
                 intent.putExtra("status", courseStatus);
                 intent.putExtra("startDate", courseStart);
                 intent.putExtra("endDate", courseEnd);
+                intent.putExtra("course_termID", courseTerm);
                 intent.putExtra("termID", termId);
                 intent.putExtra("termName", termName);
                 intent.putExtra("termStart", termStart);
@@ -252,6 +253,7 @@ public class AddAssesment extends AppCompatActivity {
                 intent.putExtra("status", courseStatus);
                 intent.putExtra("startDate", courseStart);
                 intent.putExtra("endDate", courseEnd);
+                intent.putExtra("course_termID", courseTerm);
                 intent.putExtra("termID", termId);
                 intent.putExtra("termName", termName);
                 intent.putExtra("termStart", termStart);

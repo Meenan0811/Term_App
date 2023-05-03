@@ -113,7 +113,7 @@ public class ModifyCourses extends AppCompatActivity {
         termName = getIntent().getStringExtra("termName");
         termStart = getIntent().getStringExtra("termStart");
         termEnd = getIntent().getStringExtra("termEnd");
-        Toast.makeText(ModifyCourses.this, "Term ID: " + termId + " Course Term ID: " + courseTermId, Toast.LENGTH_LONG).show();
+        Toast.makeText(ModifyCourses.this, "Term ID: " + termId + " Course Term ID: " + courseTermId + " Course ID: " + courseId, Toast.LENGTH_LONG).show();
 
         //Populate Course Status Spinner
         ArrayAdapter<CharSequence> ad = ArrayAdapter.createFromResource(this, R.array.course_status, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
@@ -179,7 +179,6 @@ public class ModifyCourses extends AppCompatActivity {
                 // If Course ID is passed from previous screen update existing course
                 else {
                     for (Term t : allTerms) {
-                        Toast.makeText(ModifyCourses.this, "Loop Entered Term ID: " + t.getTermID() + "CourseTerm ID: " + courseTermId, Toast.LENGTH_LONG).show();
                         if (courseTermId == t.getTermID()) {
                             curTerm = t.getTermID();
                         }
@@ -218,7 +217,7 @@ public class ModifyCourses extends AppCompatActivity {
                 repository = new Repository(getApplication());
                 Intent intent = new Intent(ModifyCourses.this, AddAssesment.class);
                 intent.putExtra("courseID", courseId);
-                intent.putExtra("termID", termId);
+                intent.putExtra("termID", courseTermId);
                 startActivity(intent);
             }
         });
@@ -464,6 +463,7 @@ public class ModifyCourses extends AppCompatActivity {
 
         protected void onResume() {
             super.onResume();
+
     }
 }
 
