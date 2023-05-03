@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -46,7 +48,7 @@ public class ViewTerm extends AppCompatActivity {
                 currTime = LocalDate.now().format(formatter);
                 endTime = LocalDate.now().plusMonths(1).format(formatter);
 
-                mTerm = new Term(currTime, endTime, "New Term");
+                /*mTerm = new Term(currTime, endTime, "New Term");
                 repository = new Repository(getApplication());
                 try {
                     repository.insert(mTerm);
@@ -63,8 +65,10 @@ public class ViewTerm extends AppCompatActivity {
                     Toast.makeText(ViewTerm.this, "New Term Added",Toast.LENGTH_LONG).show();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
-                }
+                }*/
 
+                Intent intent = new Intent(ViewTerm.this, AddTerm.class);
+                startActivity(intent);
             }
         });
 
@@ -84,4 +88,19 @@ public class ViewTerm extends AppCompatActivity {
         termAdapter.setTerms(allTerms);
 
     }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.back_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.back:
+                Intent intent = new Intent(ViewTerm.this, MainActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    };
 }

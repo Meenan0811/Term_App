@@ -68,9 +68,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             String courseStatus = curCourse.getCourseStatus();
             holder.courseItemView.setText(courseName + "   " + courseStatus);
         }
-        else {
-            holder.courseItemView.setText("No Courses added, please add course");
-        }
     }
 
     @Override
@@ -78,7 +75,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         if (mCourses != null) {
             return mCourses.size();
         } else {
-            return 1;
+            return 0;
         }
     }
 

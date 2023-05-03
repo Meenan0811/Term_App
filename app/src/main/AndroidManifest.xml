@@ -16,28 +16,33 @@
             android:name=".UI.CourseReceiver"
             android:enabled="true"
             android:exported="true" />
-
         <activity
             android:name=".UI.AddAssesment"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Assessment"/>
         <activity
             android:name=".UI.AddTerm"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Edit Term"/>
         <activity
             android:name=".UI.ViewCourses"
             android:exported="false" />
         <activity
             android:name=".UI.ViewMentors"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Mentors"/>
         <activity
             android:name=".UI.ViewTerm"
-            android:exported="false" />
+            android:exported="false"
+            android:label="View Terms" />
         <activity
             android:name=".UI.TermDetails"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Term Details"/>
         <activity
             android:name=".UI.ModifyCourses"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Edit Course"/>
         <activity
             android:name=".UI.MainActivity"
             android:exported="true">
