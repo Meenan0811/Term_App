@@ -8,10 +8,6 @@
         android:id="@+id/viewterms" />
 
     <item
-        android:title="View Courses"
-        android:id="@+id/viewcourses" />
-
-    <item
         android:title="Add Sample Data"
         android:id="@+id/addsampledata"
         app:showAsAction="ifRoom"/>

@@ -10,11 +10,12 @@
         android:id="@+id/textviewlogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
         android:text="Term App"
+        android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="25dp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/viewtermbutton"
@@ -34,6 +35,18 @@
         android:layout_height="wrap_content"
         android:text="Welcome to Term App, an easy to use and organized way to keep track of all your courses per term! Click below to get started"
         app:layout_constraintBottom_toTopOf="@+id/viewtermbutton"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.901" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="185dp"
+        android:layout_height="126dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textviewlogo"
+        app:srcCompat="@android:drawable/ic_menu_sort_alphabetically" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
