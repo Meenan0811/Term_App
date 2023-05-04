@@ -90,8 +90,8 @@ public class AddAssesment extends AppCompatActivity {
         editStartDate = findViewById(R.id.assstartedit);
         assTypeSpinner = findViewById(R.id.asstypespinner);
 
-        //Retrieve Today's Date and 1 month out using format MM/dd/yyyy
-        formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        //Retrieve Today's Date and 1 month out using format MM/dd/yy
+        formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
         currTime = LocalDate.now().format(formatter);
         endTime = LocalDate.now().plusMonths(6).format(formatter);
 
@@ -281,45 +281,48 @@ public class AddAssesment extends AppCompatActivity {
                 return true;
 
             case R.id.assstartnotifcation:
-                String startDate = editStartDate.getText().toString();
-                String myFormat = "MM/dd/yy";
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                Date date = null;
 
-                try {
-                    date = sdf.parse(startDate);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-
-                Long trigger = date.getTime();
                 Intent intent = new Intent(AddAssesment.this, CourseReceiver.class);
-                intent.putExtra("courseNotification", startDate + "Assessment Start Date is Today");
-                PendingIntent sender = PendingIntent.getBroadcast(AddAssesment.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
-                Toast.makeText(AddAssesment.this, "Notification set", Toast.LENGTH_LONG).show();
+                if (assId > 0) {
+                    String startDate = editStartDate.getText().toString();
+                    String myFormat = "MM/dd/yy";
+                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                    Date date = null;
+                    Long trigger = date.getTime();
+                    try {
+                        date = sdf.parse(startDate);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    intent.putExtra("courseNotification", editTitle.getText().toString() + " Begins Today, " + startDate);
+                    PendingIntent sender = PendingIntent.getBroadcast(AddAssesment.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+                    Toast.makeText(AddAssesment.this, "Notification set", Toast.LENGTH_LONG).show();
+                }
+                return true;
 
             case R.id.assendnotifcation:
-                String endDate = editEndDate.getText().toString();
-                myFormat = "MM/dd/yy";
-                sdf = new SimpleDateFormat(myFormat, Locale.US);
-                date = null;
 
-                try {
-                    date = sdf.parse(endDate);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
+                if (assId > 0) {
+                    String endDate = editEndDate.getText().toString();
+                    String myFormat = "MM/dd/yy";
+                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                    Date date;
+                    try {
+                        date = sdf.parse(endDate);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    Long trigger = date.getTime();
+                    intent = new Intent(AddAssesment.this, CourseReceiver.class);
+                    intent.putExtra("courseNotification", editTitle.getText().toString() + " Ends Today, " + endDate);
+                    PendingIntent sender = PendingIntent.getBroadcast(AddAssesment.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+                    Toast.makeText(AddAssesment.this, "Notification set", Toast.LENGTH_LONG).show();
+                    return true;
                 }
-
-                trigger = date.getTime();
-                intent = new Intent(AddAssesment.this, CourseReceiver.class);
-                intent.putExtra("courseNotification", endDate + "Assessment End Date is Today");
-                sender = PendingIntent.getBroadcast(AddAssesment.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
-                alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
-                Toast.makeText(AddAssesment.this, "Notification set", Toast.LENGTH_LONG).show();
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }

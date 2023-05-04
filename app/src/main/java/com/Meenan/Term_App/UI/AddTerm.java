@@ -66,8 +66,8 @@ public class AddTerm extends AppCompatActivity {
         termEnd = findViewById(R.id.termEndEdit);
         repository = new Repository(getApplication());
 
-        //Retrieve Today's Date and 1 month out using format MM/dd/yyyy
-        formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        //Retrieve Today's Date and 1 month out using format MM/dd/yy
+        formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
         currTime = LocalDate.now().format(formatter);
         endTime = LocalDate.now().plusMonths(6).format(formatter);
 
@@ -142,7 +142,7 @@ public class AddTerm extends AppCompatActivity {
                 String start = termStart.getText().toString();
                 String end = termEnd.getText().toString();
                 Toast.makeText(AddTerm.this, "Term Save Button Clicked", Toast.LENGTH_LONG).show();
-                if (start.length() == 10 && end.length() == 10 && !name.isEmpty()) {
+                if (start.length() == 8 && end.length() == 8 && !name.isEmpty()) {
                     if (tId != -1) {
                         mTerm = new Term(tId, termStart.getText().toString(), termEnd.getText().toString(), termName.getText().toString());
                         try {
@@ -167,7 +167,7 @@ public class AddTerm extends AppCompatActivity {
                         startActivity(intent);
                     }
                 } else {
-                    Toast.makeText(AddTerm.this, "Unable to Save Term, please ensure all fields are filled out and Date fields contain MM/DD/YYYY", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddTerm.this, "Unable to Save Term, please ensure all fields are filled out and Date fields contain MM/dd/yy", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -175,7 +175,7 @@ public class AddTerm extends AppCompatActivity {
     }
 
     public void updateCal(EditText et, Calendar cal) {
-        String format = "MM/dd/yyyy";
+        String format = "MM/dd/yy";
         SimpleDateFormat sFormat = new SimpleDateFormat(format, Locale.US);
         et.setText(sFormat.format(cal.getTime()));
     }

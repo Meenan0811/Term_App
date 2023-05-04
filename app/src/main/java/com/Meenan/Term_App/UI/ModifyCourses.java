@@ -63,7 +63,6 @@ public class ModifyCourses extends AppCompatActivity {
     private Repository repository;
     private Button saveCourseButton;
     private List<Term> allTerms = new ArrayList<>();
-    private Button addMentor;
     private int termId;
     private String termName;
     private String termStart;
@@ -155,7 +154,6 @@ public class ModifyCourses extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int curTerm = 0;
-                Toast.makeText(ModifyCourses.this, "Save Button Pressed", Toast.LENGTH_LONG).show();
                 try {
                     allTerms = repository.getAllTerms();
                 } catch (InterruptedException e) {
@@ -267,7 +265,7 @@ public class ModifyCourses extends AppCompatActivity {
         });
 
         //Retrieve Local Time and create formatter
-        formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
         currTime = LocalDate.now().format(formatter);
         endTime = LocalDate.now().plusMonths(1).format(formatter);
 
@@ -325,7 +323,7 @@ public class ModifyCourses extends AppCompatActivity {
     }
 
     public void updateCal(EditText et, Calendar cal) {
-        String format = "MM/dd/yyyy";
+        String format = "MM/dd/yy";
         SimpleDateFormat sFormat = new SimpleDateFormat(format, Locale.US);
         et.setText(sFormat.format(cal.getTime()));
     }
@@ -344,32 +342,44 @@ public class ModifyCourses extends AppCompatActivity {
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (courseId > 0) {
+
             getMenuInflater().inflate(R.menu.course_menu, menu);
-        } else {
+         /*else {
             getMenuInflater().inflate(R.menu.back_menu, menu);
-        }
+        }*/
         return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.deletecourse:
+                allTerms = new ArrayList<>();
+                try {
+                    allTerms = repository.getAllTerms();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                for (Term t : allTerms) {
+                    if (t.getTermID() == courseTermId) {
+                        termId = t.getTermID();
+                        termName = t.getTermName();
+                        termStart = t.getStartDate();
+                        termEnd = t.getEndDate();
+                    }
+                }
+
                 if (courseId > 0) {
                     try {
                         List<Course> courseList = repository.getAllCourses();
 
-                        termId = getIntent().getIntExtra("termID", -1);
-                        termName = getIntent().getStringExtra("termName");
-                        termStart = getIntent().getStringExtra("termStart");
-                        termEnd = getIntent().getStringExtra("termEnd");
                         for (Course c : courseList) {
                             if (c.getCourseID() == courseId) {
                                 repository.delete(c);
                                 Toast.makeText(ModifyCourses.this, "Course " + c.getCourseName() + " deleted", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(ModifyCourses.this, TermDetails.class);
                                 intent.putExtra("termID", termId);
-                                intent.putExtra("termName", termStart);
+                                intent.putExtra("termName", termName);
                                 intent.putExtra("termStart", termStart);
                                 intent.putExtra("termEnd", termEnd);
                                 startActivity(intent);
@@ -427,7 +437,7 @@ public class ModifyCourses extends AppCompatActivity {
 
                 Long trigger = date.getTime();
                 Intent intent = new Intent(ModifyCourses.this, CourseReceiver.class);
-                intent.putExtra("courseNotification", startDate + "Course Start Date is Today");
+                intent.putExtra("courseNotification", editCourseName.getText().toString() + " Begins Today, " + startDate);
                 PendingIntent sender = PendingIntent.getBroadcast(ModifyCourses.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
@@ -480,7 +490,7 @@ public class ModifyCourses extends AppCompatActivity {
 
                 trigger = date.getTime();
                 intent = new Intent(ModifyCourses.this, CourseReceiver.class);
-                intent.putExtra("courseNotification", endDate + "Course End Date is Today");
+                intent.putExtra("courseNotification", editCourseName.getText().toString() + " Ends Today, " + endDate);
                 sender = PendingIntent.getBroadcast(ModifyCourses.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
                 alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
@@ -489,6 +499,21 @@ public class ModifyCourses extends AppCompatActivity {
 
 
                 case R.id.backtoterm:
+                    allTerms = new ArrayList<>();
+                    try {
+                        allTerms = repository.getAllTerms();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    for (Term t : allTerms) {
+                        if (t.getTermID() == courseTermId) {
+                            termId = t.getTermID();
+                            termName = t.getTermName();
+                            termStart = t.getStartDate();
+                            termEnd = t.getEndDate();
+                        }
+                    }
+
                     intent = new Intent(ModifyCourses.this, TermDetails.class);
                     intent.putExtra("termID", termId);
                     intent.putExtra("termName", termName);
