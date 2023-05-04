@@ -93,7 +93,7 @@ public class AddAssesment extends AppCompatActivity {
         //Retrieve Today's Date and 1 month out using format MM/dd/yy
         formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
         currTime = LocalDate.now().format(formatter);
-        endTime = LocalDate.now().plusMonths(6).format(formatter);
+        endTime = LocalDate.now().plusMonths(1).format(formatter);
 
         //Assign data passed from previoous screen to local variables
         courseId = getIntent().getIntExtra("courseID", -1);
@@ -116,7 +116,11 @@ public class AddAssesment extends AppCompatActivity {
             editEndDate.setText(assEnd);
             editStartDate.setText(assStart);
             assLabel.setText("Edit Assessment");
-        } else { assLabel.setText("Add Assessment"); }
+        } else {
+            assLabel.setText("Add Assessment");
+            editStartDate.setText(currTime);
+            editEndDate.setText(endTime);
+        }
 
         try {
             repository = new Repository(getApplication());
@@ -198,7 +202,7 @@ public class AddAssesment extends AppCompatActivity {
             public void onClick(View view) {
                 Date date;
                 String sd = editStartDate.getText().toString();
-                if (sd.equals("")) sd = currTime;
+                if (!sd.equals("01/01/23")) sd = currTime;
                 try {
                     calStart.setTime(sFormatter.parse(sd));
                 } catch (ParseException e) {
@@ -223,7 +227,7 @@ public class AddAssesment extends AppCompatActivity {
             public void onClick(View view) {
                 Date date;
                 String sd = editEndDate.getText().toString();
-                if (sd.equals("")) sd = endTime;
+                if (!sd.equals("01/01/23") | !sd.equals("01/01/2023")) sd = endTime;
                 try {
                     calEnd.setTime(sFormatter.parse(sd));
                 } catch (ParseException e) {
@@ -299,6 +303,8 @@ public class AddAssesment extends AppCompatActivity {
                     AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                     alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
                     Toast.makeText(AddAssesment.this, "Notification set", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(AddAssesment.this, "Please save assessment before setting notifications", Toast.LENGTH_LONG).show();
                 }
                 return true;
 
@@ -322,7 +328,9 @@ public class AddAssesment extends AppCompatActivity {
                     alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
                     Toast.makeText(AddAssesment.this, "Notification set", Toast.LENGTH_LONG).show();
                     return true;
-                }
+                } else {
+                    Toast.makeText(AddAssesment.this, "Please save assessment before setting notifications", Toast.LENGTH_LONG).show();
+            }
         }
         return super.onOptionsItemSelected(item);
     }

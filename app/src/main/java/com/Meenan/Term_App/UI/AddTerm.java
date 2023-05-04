@@ -74,7 +74,6 @@ public class AddTerm extends AppCompatActivity {
 
         //Set EditText fields with pass Term data
         if (tId != -1) {
-            Toast.makeText(this, "tName", Toast.LENGTH_LONG).show();
             termName.setText(tName);
             termStart.setText(tStart);
             termEnd.setText(tEnd);
@@ -88,7 +87,7 @@ public class AddTerm extends AppCompatActivity {
             public void onClick(View view) {
                 Date date;
                 String sd = termStart.getText().toString();
-                if (sd.equals("")) sd = currTime;
+                if (!sd.equals("01/01/2023") | !sd.equals("01/01/23")) sd = currTime;
                 try {
                     calStart.setTime(sFormatter.parse(sd));
                 } catch (ParseException e) {
@@ -113,7 +112,7 @@ public class AddTerm extends AppCompatActivity {
             public void onClick(View view) {
                 Date date;
                 String sd = termEnd.getText().toString();
-                if (sd.equals("")) sd = endTime;
+                if (!sd.equals("01/01/2023") | !sd.equals("01/01/23")) sd = endTime;
                 try {
                     calEnd.setTime(sFormatter.parse(sd));
                 } catch (ParseException e) {

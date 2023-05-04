@@ -115,7 +115,11 @@ public class ModifyCourses extends AppCompatActivity {
         termName = getIntent().getStringExtra("termName");
         termStart = getIntent().getStringExtra("termStart");
         termEnd = getIntent().getStringExtra("termEnd");
-        Toast.makeText(ModifyCourses.this, "Term ID: " + termId + " Course Term ID: " + courseTermId + " Course ID: " + courseId, Toast.LENGTH_LONG).show();
+
+        //Retrieve Local Time and create formatter
+        formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
+        currTime = LocalDate.now().format(formatter);
+        endTime = LocalDate.now().plusMonths(1).format(formatter);
 
         //Populate Course Status Spinner
         ArrayAdapter<CharSequence> ad = ArrayAdapter.createFromResource(this, R.array.course_status, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
@@ -145,6 +149,9 @@ public class ModifyCourses extends AppCompatActivity {
             mentorEmail.setText(instEmail);
             mentorPhone.setText(instPhone);
             addAssesment(courseId);
+        } else {
+            editCourseStart.setText(currTime);
+            editCourseEnd.setText(endTime);
         }
 
 
@@ -264,10 +271,7 @@ public class ModifyCourses extends AppCompatActivity {
             }
         });
 
-        //Retrieve Local Time and create formatter
-        formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
-        currTime = LocalDate.now().format(formatter);
-        endTime = LocalDate.now().plusMonths(1).format(formatter);
+
 
         //Set DatePickers
         editCourseStart.setOnClickListener(new View.OnClickListener() {
@@ -275,7 +279,7 @@ public class ModifyCourses extends AppCompatActivity {
             public void onClick(View view) {
                 Date date;
                 String sd = editCourseStart.getText().toString();
-                if (sd.equals("")) sd = currTime;
+                if (!sd.equals("01/01/2023") | !sd.equals("01/01/23")) sd = currTime;
                 try {
                     calStart.setTime(sFormatter.parse(sd));
                 } catch (ParseException e) {
@@ -300,7 +304,7 @@ public class ModifyCourses extends AppCompatActivity {
             public void onClick(View view) {
                 Date date;
                 String sd = editCourseEnd.getText().toString();
-                if (sd.equals("")) sd = endTime;
+                if (!sd.equals("01/01/2023") | !sd.equals("01/01/23")) sd = endTime;
                 try {
                     calEnd.setTime(sFormatter.parse(sd));
                 } catch (ParseException e) {
@@ -392,10 +396,11 @@ public class ModifyCourses extends AppCompatActivity {
                     return true;
                 }
             case R.id.setstartnotifcation:
-                String startDate = editCourseStart.getText().toString();
-                String myFormat = "MM/dd/yy";
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                Date date = null;
+                if (courseId > 0) {
+                    String startDate = editCourseStart.getText().toString();
+                    String myFormat = "MM/dd/yy";
+                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                    Date date = null;
 
                 /*try {
                     allTerms = repository.getAllTerms();
@@ -429,26 +434,30 @@ public class ModifyCourses extends AppCompatActivity {
                     e.printStackTrace();
                 } */
 
-                try {
-                    date = sdf.parse(startDate);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
+                    try {
+                        date = sdf.parse(startDate);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
 
-                Long trigger = date.getTime();
-                Intent intent = new Intent(ModifyCourses.this, CourseReceiver.class);
-                intent.putExtra("courseNotification", editCourseName.getText().toString() + " Begins Today, " + startDate);
-                PendingIntent sender = PendingIntent.getBroadcast(ModifyCourses.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
-                Toast.makeText(ModifyCourses.this, "Notification set", Toast.LENGTH_LONG).show();
+                    Long trigger = date.getTime();
+                    Intent intent = new Intent(ModifyCourses.this, CourseReceiver.class);
+                    intent.putExtra("courseNotification", editCourseName.getText().toString() + " Begins Today, " + startDate);
+                    PendingIntent sender = PendingIntent.getBroadcast(ModifyCourses.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+                    Toast.makeText(ModifyCourses.this, "Notification set", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(ModifyCourses.this, "Please save course before setting notifications", Toast.LENGTH_LONG).show();
+                }
                 return true;
 
             case R.id.setendnotifcation:
-                String endDate = editCourseEnd.getText().toString();
-                myFormat = "MM/dd/yy";
-                sdf = new SimpleDateFormat(myFormat, Locale.US);
-                date = null;
+                if (courseId > 0) {
+                    String endDate = editCourseEnd.getText().toString();
+                    String myFormat = "MM/dd/yy";
+                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                    Date date = null;
 
                 /*try {
                     allTerms = repository.getAllTerms();
@@ -464,7 +473,6 @@ public class ModifyCourses extends AppCompatActivity {
                             mCourse = new Course(courseId, editCourseName.getText().toString(), startDate, editCourseEnd.getText().toString(), courseStatus, termId);
                             try {
                                 repository.update(mCourse);
-                                // FIXME: addCourseMentor(mentorNamesSpinner.getSelectedItem().toString(), courseId);
                                 Toast.makeText(ModifyCourses.this, "Course has been Updated", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(ModifyCourses.this, TermDetails.class);
                                 intent.putExtra("termID", termId);
@@ -482,19 +490,22 @@ public class ModifyCourses extends AppCompatActivity {
                     e.printStackTrace();
                 } */
 
-                try {
-                    date = sdf.parse(endDate);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
+                    try {
+                        date = sdf.parse(endDate);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
 
-                trigger = date.getTime();
-                intent = new Intent(ModifyCourses.this, CourseReceiver.class);
-                intent.putExtra("courseNotification", editCourseName.getText().toString() + " Ends Today, " + endDate);
-                sender = PendingIntent.getBroadcast(ModifyCourses.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
-                alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
-                Toast.makeText(ModifyCourses.this, "Notification set", Toast.LENGTH_LONG).show();
+                    Long trigger = date.getTime();
+                    Intent intent = new Intent(ModifyCourses.this, CourseReceiver.class);
+                    intent.putExtra("courseNotification", editCourseName.getText().toString() + " Ends Today, " + endDate);
+                    PendingIntent sender = PendingIntent.getBroadcast(ModifyCourses.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+                    Toast.makeText(ModifyCourses.this, "Notification set", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(ModifyCourses.this, "Please save course before setting notifications", Toast.LENGTH_LONG).show();
+                }
                 return true;
 
 
@@ -514,7 +525,7 @@ public class ModifyCourses extends AppCompatActivity {
                         }
                     }
 
-                    intent = new Intent(ModifyCourses.this, TermDetails.class);
+                    Intent intent = new Intent(ModifyCourses.this, TermDetails.class);
                     intent.putExtra("termID", termId);
                     intent.putExtra("termName", termName);
                     intent.putExtra("termStart", termStart);
