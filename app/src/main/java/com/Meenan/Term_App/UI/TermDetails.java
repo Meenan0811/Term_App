@@ -96,7 +96,6 @@ public class TermDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TermDetails.this, AddTerm.class);
-                Toast.makeText(TermDetails.this, "Passing Term ID " + termId, Toast.LENGTH_LONG).show();
                 intent.putExtra("termID", termId);
                 intent.putExtra("termName", mTermName);
                 intent.putExtra("termStart", startDate);

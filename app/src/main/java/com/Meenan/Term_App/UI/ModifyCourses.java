@@ -250,7 +250,6 @@ public class ModifyCourses extends AppCompatActivity {
                             intent.putExtra("assStart", assStart);
                             intent.putExtra("assEnd", assEnd);
                             intent.putExtra("assID", assId);
-                            Toast.makeText(ModifyCourses.this, "Ass ID: " + assId + " Ass Name: " + assTitle, Toast.LENGTH_LONG).show();
                             startActivity(intent);
                         });
                         builder.setNeutralButton("Add New", (DialogInterface.OnClickListener) (dialog, which) -> {
@@ -358,6 +357,13 @@ public class ModifyCourses extends AppCompatActivity {
         }
         ArrayAdapter<CharSequence> assAd = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         assAd.addAll(assString);
+        assAd.setNotifyOnChange(true);
+        courseAssSpinner.setAdapter(assAd);
+    }
+
+    public void removeAssessment(String name) {
+        ArrayAdapter<CharSequence> assAd = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        assAd.remove(name);
         courseAssSpinner.setAdapter(assAd);
     }
 
@@ -410,6 +416,8 @@ public class ModifyCourses extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     return true;
+                } else {
+                    Toast.makeText(ModifyCourses.this, "Course has not been saved and cannot be deleted", Toast.LENGTH_LONG).show();
                 }
 
             case R.id.deleteassessment:
@@ -419,12 +427,16 @@ public class ModifyCourses extends AppCompatActivity {
                         if (currAss.equals(a.getName())) {
                             try {
                                 repository.delete(a);
+                                removeAssessment(a.getName());
+                                Toast.makeText(ModifyCourses.this, "Assessment deleted", Toast.LENGTH_LONG).show();
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
                             break;
                         }
                     }
+                }else {
+                    Toast.makeText(ModifyCourses.this, "No Assessment selected, please choose an Assessment to delete" , Toast.LENGTH_LONG).show();
                 }
                 return true;
             case R.id.setstartnotifcation:
@@ -448,7 +460,7 @@ public class ModifyCourses extends AppCompatActivity {
                             mCourse = new Course(courseId, editCourseName.getText().toString(), startDate, editCourseEnd.getText().toString(), courseStatus, termId);
                             try {
                                 repository.update(mCourse);
-                                // FIXME: addCourseMentor(mentorNamesSpinner.getSelectedItem().toString(), courseId);
+
                                 Toast.makeText(ModifyCourses.this, "Course has been Updated", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(ModifyCourses.this, TermDetails.class);
                                 intent.putExtra("termID", termId);

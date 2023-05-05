@@ -280,7 +280,6 @@ public class AddAssesment extends AppCompatActivity {
                 intent.putExtra("termName", termName);
                 intent.putExtra("termStart", termStart);
                 intent.putExtra("termEnd", termEnd);
-                Toast.makeText(AddAssesment.this, "Term Name: " + termName + " Term ID: " + termId, Toast.LENGTH_LONG).show();
                 startActivity(intent);
                 return true;
 

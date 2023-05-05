@@ -301,6 +301,7 @@
                     android:layout_marginStart="96dp"
                     android:layout_marginTop="40dp"
                     android:hint="Instructor Phone"
+                    android:inputType="phone"
                     app:layout_constraintStart_toEndOf="@+id/instructoremail"
                     app:layout_constraintTop_toBottomOf="@+id/mentorname" />
             </LinearLayout>

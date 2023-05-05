@@ -140,7 +140,6 @@ public class AddTerm extends AppCompatActivity {
                 String name = termName.getText().toString();
                 String start = termStart.getText().toString();
                 String end = termEnd.getText().toString();
-                Toast.makeText(AddTerm.this, "Term Save Button Clicked", Toast.LENGTH_LONG).show();
                 if (start.length() == 8 && end.length() == 8 && !name.isEmpty()) {
                     if (tId != -1) {
                         mTerm = new Term(tId, termStart.getText().toString(), termEnd.getText().toString(), termName.getText().toString());
