@@ -18,9 +18,4 @@
         android:id="@+id/assback"
         app:showAsAction="always" />
 
-    <item
-        android:title="Delete Assesment"
-        android:id="@+id/deleteassesment"
-        app:showAsAction="never" />
-
 </menu>

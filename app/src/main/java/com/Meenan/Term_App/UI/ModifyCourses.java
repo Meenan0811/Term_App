@@ -271,6 +271,22 @@ public class ModifyCourses extends AppCompatActivity {
             }
         });
 
+        //On Long press Share notes via email text etc...
+        editCourseNotes.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "I am Sharing Course Notes From Course " + editCourseName.getText().toString() + ": " +editCourseNotes.getText().toString());
+                shareIntent.putExtra(Intent.EXTRA_TITLE, "Share Course Notes");
+                shareIntent.setType("text/plain");
+                Intent sIntent = Intent.createChooser(shareIntent, null);
+                startActivity(sIntent);
+
+                return false;
+            }
+        });
+
 
 
         //Set DatePickers
@@ -395,6 +411,22 @@ public class ModifyCourses extends AppCompatActivity {
                     }
                     return true;
                 }
+
+            case R.id.deleteassessment:
+                if (courseAssSpinner.getSelectedItem() != null) {
+                    for (Assesment a : allAssesmentList) {
+                        String currAss = courseAssSpinner.getSelectedItem().toString();
+                        if (currAss.equals(a.getName())) {
+                            try {
+                                repository.delete(a);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            break;
+                        }
+                    }
+                }
+                return true;
             case R.id.setstartnotifcation:
                 if (courseId > 0) {
                     String startDate = editCourseStart.getText().toString();

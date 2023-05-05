@@ -16,6 +16,11 @@
         android:title="Delete Course"
         android:id="@+id/deletecourse"
         app:showAsAction="never" />
+
+    <item
+        android:title="Delete Assessment"
+        android:id="@+id/deleteassessment"
+        app:showAsAction="never" />
     <item
         android:title="Back"
         android:id="@+id/backtoterm"

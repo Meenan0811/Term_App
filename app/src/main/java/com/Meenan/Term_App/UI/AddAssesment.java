@@ -292,12 +292,13 @@ public class AddAssesment extends AppCompatActivity {
                     String myFormat = "MM/dd/yy";
                     SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
                     Date date = null;
-                    Long trigger = date.getTime();
+
                     try {
                         date = sdf.parse(startDate);
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
+                    Long trigger = date.getTime();
                     intent.putExtra("courseNotification", editTitle.getText().toString() + " Begins Today, " + startDate);
                     PendingIntent sender = PendingIntent.getBroadcast(AddAssesment.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
                     AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

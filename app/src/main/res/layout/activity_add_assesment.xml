@@ -33,8 +33,7 @@
         android:layout_marginStart="72dp"
         android:layout_marginTop="124dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
+        android:hint="Assessment Title"
         app:layout_constraintStart_toEndOf="@+id/textView9"
         app:layout_constraintTop_toTopOf="parent" />
 
