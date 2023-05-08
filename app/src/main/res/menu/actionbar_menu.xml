@@ -2,15 +2,10 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-    <item
-        android:title="View Terms"
-        android:id="@+id/viewterms" />
-
     <item
         android:title="Add Sample Data"
         android:id="@+id/addsampledata"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
 
     <item
         android:title="Delete All Data"

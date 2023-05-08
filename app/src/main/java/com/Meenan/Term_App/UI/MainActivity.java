@@ -45,11 +45,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
 
         switch (item.getItemId()) {
-            case R.id.viewterms:
-                 intent = new Intent(MainActivity.this, ViewTerm.class);
-                 startActivity(intent);
-                 return true;
-
             case R.id.addsampledata:
                 Repository repository = new Repository(getApplication());
                 Term term = new Term("01/01/2023", "01/30/2023", "Sample Term");
