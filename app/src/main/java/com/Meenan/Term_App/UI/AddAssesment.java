@@ -109,8 +109,6 @@ public class AddAssesment extends AppCompatActivity {
         ad.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         assTypeSpinner.setAdapter(ad);
 
-        Toast.makeText(this, "Ass ID: " + assId + " Ass Name: " + assTitle, Toast.LENGTH_LONG).show();
-
         if (assId != -1) {
             editTitle.setText(assTitle);
             editEndDate.setText(assEnd);

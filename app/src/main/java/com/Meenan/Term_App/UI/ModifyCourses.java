@@ -386,55 +386,75 @@ public class ModifyCourses extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                for (Term t : allTerms) {
-                    if (t.getTermID() == courseTermId) {
-                        termId = t.getTermID();
-                        termName = t.getTermName();
-                        termStart = t.getStartDate();
-                        termEnd = t.getEndDate();
+                AlertDialog.Builder builder = new AlertDialog.Builder(ModifyCourses.this);
+                AlertDialog alertDialog = null;
+                builder.setMessage("Would you like to delete this course");
+                builder.setTitle("Delete Course");
+                builder.setPositiveButton("Delete", (DialogInterface.OnClickListener) (dialog, which) -> {
+
+                    for (Term t : allTerms) {
+                        if (t.getTermID() == courseTermId) {
+                            termId = t.getTermID();
+                            termName = t.getTermName();
+                            termStart = t.getStartDate();
+                            termEnd = t.getEndDate();
+                        }
                     }
-                }
 
-                if (courseId > 0) {
-                    try {
-                        List<Course> courseList = repository.getAllCourses();
+                    if (courseId > 0) {
+                        try {
+                            List<Course> courseList = repository.getAllCourses();
 
-                        for (Course c : courseList) {
-                            if (c.getCourseID() == courseId) {
-                                repository.delete(c);
-                                Toast.makeText(ModifyCourses.this, "Course " + c.getCourseName() + " deleted", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(ModifyCourses.this, TermDetails.class);
-                                intent.putExtra("termID", termId);
-                                intent.putExtra("termName", termName);
-                                intent.putExtra("termStart", termStart);
-                                intent.putExtra("termEnd", termEnd);
-                                startActivity(intent);
+                            for (Course c : courseList) {
+                                if (c.getCourseID() == courseId) {
+                                    repository.delete(c);
+                                    Toast.makeText(ModifyCourses.this, "Course " + c.getCourseName() + " deleted", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(ModifyCourses.this, TermDetails.class);
+                                    intent.putExtra("termID", termId);
+                                    intent.putExtra("termName", termName);
+                                    intent.putExtra("termStart", termStart);
+                                    intent.putExtra("termEnd", termEnd);
+                                    startActivity(intent);
+                                }
                             }
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
 
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    } else {
+                        Toast.makeText(ModifyCourses.this, "Course has not been saved and cannot be deleted", Toast.LENGTH_LONG).show();
                     }
-                    return true;
-                } else {
-                    Toast.makeText(ModifyCourses.this, "Course has not been saved and cannot be deleted", Toast.LENGTH_LONG).show();
-                }
+                });
+                builder.setNegativeButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> { });
+                alertDialog = builder.create();
+                alertDialog.show();
+                return true;
 
             case R.id.deleteassessment:
                 if (courseAssSpinner.getSelectedItem() != null) {
-                    for (Assesment a : allAssesmentList) {
-                        String currAss = courseAssSpinner.getSelectedItem().toString();
-                        if (currAss.equals(a.getName())) {
-                            try {
-                                repository.delete(a);
-                                removeAssessment(a.getName());
-                                Toast.makeText(ModifyCourses.this, "Assessment deleted", Toast.LENGTH_LONG).show();
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
+                    builder = new AlertDialog.Builder(ModifyCourses.this);
+                    alertDialog = null;
+                    builder.setMessage("Would you like to delete Assessment " + courseAssSpinner.getSelectedItem().toString() + "?");
+                    builder.setTitle("Delete Assessment");
+                    builder.setPositiveButton("Delete", (DialogInterface.OnClickListener) (dialog, which) -> {
+                        for (Assesment a : allAssesmentList) {
+                            String currAss = courseAssSpinner.getSelectedItem().toString();
+                            if (currAss.equals(a.getName())) {
+                                try {
+                                    repository.delete(a);
+                                    removeAssessment(a.getName());
+                                    Toast.makeText(ModifyCourses.this, "Assessment deleted", Toast.LENGTH_LONG).show();
+                                } catch (InterruptedException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                break;
                             }
-                            break;
                         }
-                    }
+                    });
+                    builder.setNegativeButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {});
+                    alertDialog = builder.create();
+                    alertDialog.show();
                 }else {
                     Toast.makeText(ModifyCourses.this, "No Assessment selected, please choose an Assessment to delete" , Toast.LENGTH_LONG).show();
                 }
